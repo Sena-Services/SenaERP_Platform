@@ -9,6 +9,11 @@ import os
 class WebsiteBlog(Document):
 	"""Website Blog Document"""
 
+	website = frappe._dict(
+		condition_field="published",
+		page_title_field="title"
+	)
+
 	def autoname(self):
 		"""Set name from title"""
 		self.name = self.title
