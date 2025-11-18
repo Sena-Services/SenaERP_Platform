@@ -158,7 +158,8 @@ def validate_token(token=None):
 		return {
 			"success": True,
 			"email": token_doc.email,
-			"administrator_password": stored_password
+			"administrator_password": stored_password,
+			"site_url": token_doc.site_url
 		}
 
 	except Exception as e:
@@ -193,3 +194,50 @@ def validate_session():
 			"error": str(e),
 			"session_status": "error"
 		}
+
+
+@frappe.whitelist(allow_guest=True)
+def auto_login(token=None):
+	"""
+	Auto-login using one-time token from landing page
+	Validates token and logs user into their provisioned site
+
+	Args:
+		token (str): One-time login token
+
+	Returns:
+		Redirects to site home on success, or returns error
+	"""
+	try:
+		if not token:
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = "/login?error=missing_token"
+			return
+
+		# Validate token directly (no cross-site request needed)
+		validation_result = validate_token(token)
+
+		if not validation_result.get("success"):
+			error = validation_result.get("error", "invalid_token").lower().replace(" ", "_")
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = f"/login?error={error}"
+			return
+
+		# Get site URL from validation response
+		site_url = validation_result["site_url"]
+
+		# Login as Administrator (token already validated)
+		frappe.local.login_manager.login_as("Administrator")
+
+		# Commit the session to database (required for GET requests)
+		frappe.db.commit()
+
+		# Redirect to the provisioned site frontend
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = site_url
+
+	except Exception as e:
+		frappe.log_error(f"Auto-login error: {str(e)}", "Auto-login Error")
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = "/login?error=unexpected"
+		return
