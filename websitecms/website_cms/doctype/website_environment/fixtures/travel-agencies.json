@@ -3,6 +3,7 @@
  "environment_id": "travel-agencies",
  "label": "Travel Agencies",
  "category": "Industry",
+ "status": "In Development",
  "published": 1,
  "display_order": 1,
  "persona": "End-to-end travel booking and package management",

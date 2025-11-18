@@ -34,6 +34,7 @@ def get_published_environments(limit=10, fields=None):
 				"environment_id",
 				"label",
 				"category",
+				"status",
 				"persona",
 				"summary",
 				"interface_count",
