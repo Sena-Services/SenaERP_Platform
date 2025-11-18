@@ -58,7 +58,8 @@ class WebsiteBlog(Document):
 
 	def get_context(self, context):
 		"""Build page context for web view"""
-		context.no_cache = 0
+		# Enable caching for fast page loads
+		context.no_cache = 1
 		context.show_sidebar = False
 		return context
 
