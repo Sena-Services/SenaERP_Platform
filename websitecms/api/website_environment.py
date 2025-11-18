@@ -111,6 +111,7 @@ def get_published_environments(limit=10, fields=None):
 				"id": env.get("environment_id"),
 				"label": env.get("label"),
 				"category": env.get("category"),
+				"status": env.get("status"),
 				"persona": env.get("persona"),
 				"summary": env.get("summary"),
 				"bullets": bullets,
