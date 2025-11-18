@@ -218,6 +218,7 @@ def get_environment_by_id(environment_id):
 			"id": env.get("environment_id"),
 			"label": env.get("label"),
 			"category": env.get("category"),
+			"status": env.get("status"),
 			"persona": env.get("persona"),
 			"summary": env.get("summary"),
 			"bullets": bullets,
