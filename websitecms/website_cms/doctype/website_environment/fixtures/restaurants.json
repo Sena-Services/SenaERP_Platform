@@ -1,0 +1,17 @@
+{
+ "doctype": "Website Environment",
+ "environment_id": "restaurants",
+ "label": "Restaurants (RMS)",
+ "category": "Industry",
+ "published": 1,
+ "display_order": 3,
+ "persona": "Restaurant management from reservations to kitchen to analytics",
+ "summary": "<h3>Modern Restaurant Management System</h3><p>Streamline every aspect of restaurant operations—from front-of-house reservations to back-of-house kitchen management. Designed for single locations and multi-unit restaurant groups who demand efficiency and excellence.</p><h4>Reservation & Table Management</h4><p>Smart table management optimizes seating arrangements based on party size, timing, and server capacity. Online booking integrates with your website and social media. Waitlist management with SMS notifications keeps guests informed. Special occasion tracking ensures VIP treatment for birthdays, anniversaries, and regular customers.</p><h4>Point of Sale Excellence</h4><p>Lightning-fast order entry with customizable modifiers, split bills, and course timing. Kitchen display system routes orders to the right stations automatically. Bar tabs, table transfers, and check splitting happen in seconds. Payment processing supports all methods including mobile wallets and contactless.</p><h4>Kitchen Display System</h4><p>Orders appear on kitchen screens by station (grill, apps, desserts). Color-coded timing alerts prevent delays. Completed items get marked off in real-time. Expo station coordinates final plating and delivery. Reduce ticket times and improve food quality through better kitchen coordination.</p><h4>Inventory & Cost Control</h4><p>Track ingredient inventory with automatic depletion as orders flow through. Set par levels and receive alerts for reordering. Recipe costing shows exact food cost for every menu item. Identify high-margin and low-margin dishes to optimize your menu strategy.</p><h4>Staff Scheduling & Management</h4><p>Create schedules based on projected covers and labor budget targets. Staff clock in/out with time tracking. Track server performance metrics: covers served, average check, upsell success. Labor cost as percentage of revenue stays visible in real-time.</p><h4>Menu Engineering</h4><p>Analyze which dishes are popular and profitable. Identify stars (popular + profitable), workhorses (popular but low margin), puzzles (low popularity but high margin), and dogs (neither popular nor profitable). Make data-driven menu decisions.</p><h4>Multi-Location Support</h4><p>For restaurant groups: Centralized reporting, standardized recipes across locations, consolidated purchasing power, and shared customer loyalty programs. Corporate clients manage catering and events across your restaurant portfolio.</p><h4>Customer Engagement</h4><p>Loyalty programs reward repeat visits. Post-meal surveys capture feedback immediately. Email marketing for special events and promotions. Birthday and anniversary campaigns drive incremental visits.</p><hr><p><em>The complete operating system for restaurants that take hospitality and profitability seriously.</em></p>",
+ "interface_count": 24,
+ "data_count": 18,
+ "workflows_count": 22,
+ "agents_count": 7,
+ "bullet_1": "Smart table management with online booking and waitlist SMS",
+ "bullet_2": "Kitchen display system with timing alerts and station routing",
+ "bullet_3": "Inventory tracking with recipe costing and menu engineering"
+}

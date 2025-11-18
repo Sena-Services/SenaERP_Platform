@@ -50,7 +50,9 @@ def load_all_fixtures():
 
     fixture_files = [
         'travel-agencies.json',
+        'dmc.json',
         'hotels.json',
+        'restaurants.json',
         'receptionists.json',
         'sales-module.json'
     ]

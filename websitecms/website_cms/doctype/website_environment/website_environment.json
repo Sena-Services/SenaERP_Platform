@@ -93,10 +93,10 @@
   },
   {
    "fieldname": "summary",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Summary",
    "reqd": 1,
-   "description": "Detailed description of the environment"
+   "description": "Detailed description of the environment (supports HTML/rich text)"
   },
   {
    "fieldname": "metrics_section",

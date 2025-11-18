@@ -1,0 +1,17 @@
+{
+ "doctype": "Website Environment",
+ "environment_id": "dmc",
+ "label": "DMC & Tour Operators",
+ "category": "Industry",
+ "published": 1,
+ "display_order": 2,
+ "persona": "Design complex itineraries and supplier logistics at production scale",
+ "summary": "<h3>Command Center for Destination Management</h3><p>Built for DMCs and large-scale tour operators who orchestrate complex, multi-supplier experiences across destinations. Manage everything from supplier contracts to on-ground execution in a single, powerful platform.</p><h4>Enterprise-Grade Itinerary Design</h4><p>Create intricate, multi-day itineraries that combine experiences, transport, guides, and accommodations. Our intelligent builder understands dependencies—when you change a flight time, connected activities automatically adjust. Template library lets you rapidly customize proven itineraries for new clients while maintaining your operational standards.</p><h4>Supplier Relationship Management</h4><p>Centralize all supplier contracts, rate cards, SLAs, and blackout dates in one searchable database. Track supplier performance, monitor quality scores, and ensure compliance with negotiated terms. Automated alerts notify you when contracts need renewal or when suppliers have availability issues.</p><h4>On-Ground Operations Excellence</h4><p>Assign staff, guides, and drivers to specific departures. Track real-time execution with mobile updates from the field. Monitor pax manifests, rooming lists, and special requirements across all active tours. Your operations team always knows who's where, what's next, and what needs attention.</p><h4>Financial Intelligence</h4><p>Track margins at every level—per service, per itinerary, per departure. Monitor supplier payments against delivery schedules. Generate accurate cost projections before you commit. Real-time dashboards show profitability across your entire operation, helping you optimize pricing and supplier selection.</p><h4>Scalable Production Management</h4><p>Handle hundreds of concurrent departures without chaos. Batch operations let you update multiple tours simultaneously. Automated workflows ensure consistent quality whether you're managing 10 or 1,000 travelers per day. Built for operations teams that need power and precision.</p><h4>Integration & Automation</h4><p>Connect with supplier booking systems, payment gateways, and communication platforms. Automated confirmations flow to travelers, suppliers, and staff. Reduce manual coordination by 80% while improving accuracy and response time.</p><hr><p><em>The control tower for DMCs who run tight operations at scale.</em></p>",
+ "interface_count": 32,
+ "data_count": 22,
+ "workflows_count": 45,
+ "agents_count": 12,
+ "bullet_1": "Centralize supplier SLAs, rate cards, and blackout dates",
+ "bullet_2": "Assign on-ground staff and track execution with mobile updates",
+ "bullet_3": "Monitor margins, payments, and pax manifests in real time"
+}
