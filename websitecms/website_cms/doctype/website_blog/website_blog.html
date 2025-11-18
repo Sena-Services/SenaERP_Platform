@@ -1,0 +1,132 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head_include %}
+<meta name="description" content="{{ description }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+{% if image %}
+<meta property="og:image" content="{{ image }}">
+{% endif %}
+{% endblock %}
+
+{% block page_content %}
+<div class="blog-post">
+	<article>
+		<header class="blog-header">
+			<h1 class="blog-title">{{ title }}</h1>
+			{% if published_date %}
+			<p class="blog-meta">
+				<time datetime="{{ published_date }}">{{ frappe.format_date(published_date, "medium") }}</time>
+			</p>
+			{% endif %}
+			{% if description %}
+			<p class="blog-description lead">{{ description }}</p>
+			{% endif %}
+		</header>
+
+		<div class="blog-content">
+			{{ content | safe }}
+		</div>
+	</article>
+</div>
+
+<style>
+.blog-post {
+	max-width: 800px;
+	margin: 40px auto;
+	padding: 0 20px;
+}
+
+.blog-header {
+	margin-bottom: 40px;
+	border-bottom: 1px solid #e0e0e0;
+	padding-bottom: 20px;
+}
+
+.blog-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-bottom: 10px;
+	line-height: 1.2;
+}
+
+.blog-meta {
+	color: #666;
+	font-size: 0.95rem;
+	margin-bottom: 15px;
+}
+
+.blog-description {
+	font-size: 1.2rem;
+	color: #444;
+	margin-top: 15px;
+}
+
+.blog-content {
+	font-size: 1.1rem;
+	line-height: 1.8;
+	color: #333;
+}
+
+.blog-content h2 {
+	font-size: 2rem;
+	margin-top: 40px;
+	margin-bottom: 20px;
+	font-weight: 600;
+}
+
+.blog-content h3 {
+	font-size: 1.5rem;
+	margin-top: 30px;
+	margin-bottom: 15px;
+	font-weight: 600;
+}
+
+.blog-content p {
+	margin-bottom: 20px;
+}
+
+.blog-content ul, .blog-content ol {
+	margin-bottom: 20px;
+	padding-left: 30px;
+}
+
+.blog-content li {
+	margin-bottom: 10px;
+}
+
+.blog-content video {
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.blog-content a {
+	color: #0066cc;
+	text-decoration: none;
+}
+
+.blog-content a:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+	.blog-title {
+		font-size: 2rem;
+	}
+
+	.blog-content {
+		font-size: 1rem;
+	}
+
+	.blog-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.blog-content h3 {
+		font-size: 1.25rem;
+	}
+}
+</style>
+{% endblock %}
