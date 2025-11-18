@@ -1,0 +1,18 @@
+{
+ "doctype": "Website Environment",
+ "environment_id": "receptionists",
+ "label": "Receptionists",
+ "category": "Role",
+ "published": 1,
+ "display_order": 10,
+ "persona": "Streamline front desk operations and guest management",
+ "summary": "A complete reception management system designed for hotels, offices, and service businesses. Manage guest check-ins, appointments, visitor logs, and front desk workflows with AI-powered assistance. Perfect for receptionists who need to handle multiple tasks efficiently while providing excellent customer service.",
+ "ui_components": 12,
+ "automations": 8,
+ "agents": 3,
+ "data_models": 6,
+ "integrations": 4,
+ "bullet_1": "Guest check-in/check-out workflows with automated notifications",
+ "bullet_2": "Appointment scheduling and visitor management system",
+ "bullet_3": "AI assistant for common guest queries and service requests"
+}

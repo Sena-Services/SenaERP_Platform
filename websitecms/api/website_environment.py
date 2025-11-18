@@ -33,6 +33,7 @@ def get_published_environments(limit=10, fields=None):
 				"name",
 				"environment_id",
 				"label",
+				"category",
 				"persona",
 				"summary",
 				"ui_components",
@@ -110,6 +111,7 @@ def get_published_environments(limit=10, fields=None):
 			transformed_env = {
 				"id": env.get("environment_id"),
 				"label": env.get("label"),
+				"category": env.get("category"),
 				"persona": env.get("persona"),
 				"summary": env.get("summary"),
 				"bullets": bullets,
@@ -217,6 +219,7 @@ def get_environment_by_id(environment_id):
 		transformed_env = {
 			"id": env.get("environment_id"),
 			"label": env.get("label"),
+			"category": env.get("category"),
 			"persona": env.get("persona"),
 			"summary": env.get("summary"),
 			"bullets": bullets,

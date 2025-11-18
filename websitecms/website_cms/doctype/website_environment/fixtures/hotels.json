@@ -1,0 +1,18 @@
+{
+ "doctype": "Website Environment",
+ "environment_id": "hotels",
+ "label": "Hotels",
+ "category": "Industry",
+ "published": 1,
+ "display_order": 2,
+ "persona": "Complete hotel property management system",
+ "summary": "A full-featured hotel management system for boutique hotels and hotel chains. Manage reservations, housekeeping, guest services, and revenue optimization all in one place. Includes channel management, dynamic pricing, and guest engagement tools to maximize occupancy and guest satisfaction.",
+ "ui_components": 22,
+ "automations": 14,
+ "agents": 4,
+ "data_models": 12,
+ "integrations": 9,
+ "bullet_1": "Room inventory and reservation management with channel sync",
+ "bullet_2": "Housekeeping task automation and room status tracking",
+ "bullet_3": "Guest profile management with preference tracking"
+}
