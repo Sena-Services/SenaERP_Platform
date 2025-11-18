@@ -10,9 +10,24 @@ import frappe
 
 def after_request(response):
 	"""
-	Add CORS headers to all responses
+	Add CORS headers and cache headers to responses
 	Reads configuration from site_config.json
 	"""
+	# Add cache headers for static files (videos, images, etc.)
+	request_path = frappe.request.path if hasattr(frappe, 'request') else ''
+	if request_path and request_path.startswith('/files/'):
+		# Get file extension
+		ext = request_path.lower().split('.')[-1] if '.' in request_path else ''
+
+		# Cache media files aggressively
+		if ext in ['mp4', 'webm', 'ogg', 'mov', 'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf']:
+			# Cache for 1 year (immutable files)
+			response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+			response.headers['Expires'] = frappe.utils.now_datetime() + frappe.utils.timedelta(days=365)
+		elif ext in ['js', 'css']:
+			# Cache JS/CSS for 1 day
+			response.headers['Cache-Control'] = 'public, max-age=86400'
+
 	# Get CORS config from site_config
 	allow_cors = frappe.conf.get("allow_cors")
 
