@@ -144,13 +144,6 @@ def validate_token(token=None):
 				"error": _("Token expired")
 			}
 
-		# Get the decrypted password
-		stored_password = frappe.utils.password.get_decrypted_password(
-			"Login Token",
-			token_doc.name,
-			"administrator_password"
-		)
-
 		# Mark token as used
 		frappe.db.set_value("Login Token", token_doc.name, "used", 1)
 		frappe.db.commit()
@@ -158,7 +151,6 @@ def validate_token(token=None):
 		return {
 			"success": True,
 			"email": token_doc.email,
-			"administrator_password": stored_password,
 			"site_url": token_doc.site_url
 		}
 

@@ -200,7 +200,7 @@ app_license = "unlicense"
 # Request Events
 # ----------------
 # before_request = ["websitecms.utils.before_request"]
-# after_request = ["websitecms.utils.after_request"]
+after_request = ["websitecms.utils.after_request"]
 
 # Job Events
 # ----------
