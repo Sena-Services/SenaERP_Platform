@@ -62,6 +62,12 @@ class WebsiteBlog(Document):
 		context.show_sidebar = False
 		return context
 
+	def has_website_permission(self, ptype, user, verbose=False):
+		"""Allow guests to view published blogs"""
+		if self.published:
+			return True
+		return False
+
 
 @frappe.whitelist(allow_guest=True)
 def get_published_blogs(limit=10):
