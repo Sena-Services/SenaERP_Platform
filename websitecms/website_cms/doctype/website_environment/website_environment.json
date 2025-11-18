@@ -20,11 +20,10 @@
   "persona",
   "summary",
   "metrics_section",
-  "ui_components",
-  "automations",
-  "agents",
-  "data_models",
-  "integrations",
+  "interface_count",
+  "data_count",
+  "workflows_count",
+  "agents_count",
   "features_section",
   "bullet_1",
   "bullet_2",
@@ -105,34 +104,32 @@
    "label": "Metrics & Counts"
   },
   {
-   "fieldname": "ui_components",
+   "fieldname": "interface_count",
    "fieldtype": "Int",
-   "label": "UI Components Count",
-   "default": "0"
+   "label": "Interface Count",
+   "default": "0",
+   "description": "Number of UI components/interfaces"
   },
   {
-   "fieldname": "automations",
+   "fieldname": "data_count",
    "fieldtype": "Int",
-   "label": "Automations Count",
-   "default": "0"
+   "label": "Data Count",
+   "default": "0",
+   "description": "Number of data models/doctypes"
   },
   {
-   "fieldname": "agents",
+   "fieldname": "workflows_count",
+   "fieldtype": "Int",
+   "label": "Workflows Count",
+   "default": "0",
+   "description": "Number of workflows/automations"
+  },
+  {
+   "fieldname": "agents_count",
    "fieldtype": "Int",
    "label": "Agents Count",
-   "default": "0"
-  },
-  {
-   "fieldname": "data_models",
-   "fieldtype": "Int",
-   "label": "Data Models Count",
-   "default": "0"
-  },
-  {
-   "fieldname": "integrations",
-   "fieldtype": "Int",
-   "label": "Integrations Count",
-   "default": "0"
+   "default": "0",
+   "description": "Number of AI agents"
   },
   {
    "fieldname": "features_section",

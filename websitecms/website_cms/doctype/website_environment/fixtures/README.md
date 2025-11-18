@@ -16,11 +16,10 @@ Each JSON file represents a Website Environment document with the following stru
   "display_order": 10,                     // Sort order
   "persona": "Short tagline",              // Brief description
   "summary": "Detailed description...",    // Full description
-  "ui_components": 12,                     // Count of UI components
-  "automations": 8,                        // Count of automations
-  "agents": 3,                             // Count of AI agents
-  "data_models": 6,                        // Count of data models
-  "integrations": 4,                       // Count of integrations
+  "interface_count": 12,                   // Count of interfaces/UI
+  "data_count": 6,                         // Count of data models
+  "workflows_count": 8,                    // Count of workflows/automations
+  "agents_count": 3,                       // Count of AI agents
   "bullet_1": "First feature point",       // Key feature 1
   "bullet_2": "Second feature point",      // Key feature 2
   "bullet_3": "Third feature point"        // Key feature 3

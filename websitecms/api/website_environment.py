@@ -36,11 +36,10 @@ def get_published_environments(limit=10, fields=None):
 				"category",
 				"persona",
 				"summary",
-				"ui_components",
-				"automations",
-				"agents",
-				"data_models",
-				"integrations",
+				"interface_count",
+				"data_count",
+				"workflows_count",
+				"agents_count",
 				"bullet_1",
 				"bullet_2",
 				"bullet_3",
@@ -67,28 +66,28 @@ def get_published_environments(limit=10, fields=None):
 			# Build metrics array
 			metrics = [
 				{
-					"id": "ui",
-					"label": "UI components",
-					"value": str(env.get("ui_components", 0)),
+					"id": "interface",
+					"label": "Interface",
+					"value": str(env.get("interface_count", 0)),
 					"icon": "layout"
 				},
 				{
-					"id": "flows",
-					"label": "Automations",
-					"value": str(env.get("automations", 0)),
+					"id": "data",
+					"label": "Data",
+					"value": str(env.get("data_count", 0)),
+					"icon": "database"
+				},
+				{
+					"id": "workflows",
+					"label": "Workflows",
+					"value": str(env.get("workflows_count", 0)),
 					"icon": "zap"
 				},
 				{
 					"id": "agents",
 					"label": "Agents",
-					"value": str(env.get("agents", 0)),
+					"value": str(env.get("agents_count", 0)),
 					"icon": "cpu"
-				},
-				{
-					"id": "data",
-					"label": "Data models",
-					"value": str(env.get("data_models", 0)),
-					"icon": "database"
 				}
 			]
 
@@ -101,11 +100,10 @@ def get_published_environments(limit=10, fields=None):
 
 			# Build blueprint counts
 			blueprint_counts = {
-				"UI": env.get("ui_components", 0),
-				"Logic": env.get("automations", 0),
-				"Database": env.get("data_models", 0),
-				"Integration": env.get("integrations", 0),
-				"Agents": env.get("agents", 0)
+				"Interface": env.get("interface_count", 0),
+				"Data": env.get("data_count", 0),
+				"Workflows": env.get("workflows_count", 0),
+				"Agents": env.get("agents_count", 0)
 			}
 
 			transformed_env = {
@@ -177,28 +175,28 @@ def get_environment_by_id(environment_id):
 		# Transform to match frontend structure
 		metrics = [
 			{
-				"id": "ui",
-				"label": "UI components",
-				"value": str(env.get("ui_components", 0)),
+				"id": "interface",
+				"label": "Interface",
+				"value": str(env.get("interface_count", 0)),
 				"icon": "layout"
 			},
 			{
-				"id": "flows",
-				"label": "Automations",
-				"value": str(env.get("automations", 0)),
+				"id": "data",
+				"label": "Data",
+				"value": str(env.get("data_count", 0)),
+				"icon": "database"
+			},
+			{
+				"id": "workflows",
+				"label": "Workflows",
+				"value": str(env.get("workflows_count", 0)),
 				"icon": "zap"
 			},
 			{
 				"id": "agents",
 				"label": "Agents",
-				"value": str(env.get("agents", 0)),
+				"value": str(env.get("agents_count", 0)),
 				"icon": "cpu"
-			},
-			{
-				"id": "data",
-				"label": "Data models",
-				"value": str(env.get("data_models", 0)),
-				"icon": "database"
 			}
 		]
 
@@ -209,11 +207,10 @@ def get_environment_by_id(environment_id):
 				bullets.append(env.get(bullet_field))
 
 		blueprint_counts = {
-			"UI": env.get("ui_components", 0),
-			"Logic": env.get("automations", 0),
-			"Database": env.get("data_models", 0),
-			"Integration": env.get("integrations", 0),
-			"Agents": env.get("agents", 0)
+			"Interface": env.get("interface_count", 0),
+			"Data": env.get("data_count", 0),
+			"Workflows": env.get("workflows_count", 0),
+			"Agents": env.get("agents_count", 0)
 		}
 
 		transformed_env = {
