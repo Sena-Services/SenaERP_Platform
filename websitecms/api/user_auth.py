@@ -12,6 +12,21 @@ from frappe.utils import now_datetime, add_to_date
 import secrets
 
 
+@frappe.whitelist(allow_guest=True, methods=['GET'])
+def get_csrf_token():
+	"""
+	Get CSRF token for guest users
+	This allows cross-origin requests to get a token before making POST requests
+
+	Returns:
+		dict: CSRF token
+	"""
+	return {
+		"success": True,
+		"csrf_token": frappe.sessions.get_csrf_token()
+	}
+
+
 @frappe.whitelist(allow_guest=True)
 def login(email=None, password=None):
 	"""
