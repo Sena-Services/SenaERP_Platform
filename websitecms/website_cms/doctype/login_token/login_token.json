@@ -41,8 +41,7 @@
   {
    "fieldname": "administrator_password",
    "fieldtype": "Password",
-   "label": "Administrator Password",
-   "reqd": 1
+   "label": "Administrator Password"
   },
   {
    "fieldname": "column_break_4",

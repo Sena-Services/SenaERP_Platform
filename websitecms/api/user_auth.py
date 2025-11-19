@@ -189,6 +189,133 @@ def validate_session():
 
 
 @frappe.whitelist(allow_guest=True)
+def get_current_user():
+	"""
+	Get current logged-in user for the landing page
+	Called by Next.js environment selector to check authentication
+
+	Landing page users are always Administrator (logged in via auto_login_from_provisioned)
+	This endpoint just confirms authentication status
+
+	Returns:
+		dict: Success status and minimal user info
+	"""
+	try:
+		# Check if user is logged in
+		if frappe.session.user == "Guest":
+			return {
+				"success": False,
+				"user": None,
+				"is_guest": True
+			}
+
+		# User is authenticated (always Administrator on landing page)
+		return {
+			"success": True,
+			"user": {
+				"email": frappe.session.user,
+				"full_name": "Administrator",
+				"first_name": "Admin",
+				"last_name": "",
+				"user_type": "System User"
+			}
+		}
+
+	except Exception as e:
+		frappe.log_error(f"Get current user error: {str(e)}", "Get Current User Error")
+		return {
+			"success": False,
+			"user": None,
+			"error": str(e)
+		}
+
+
+@frappe.whitelist()
+def logout():
+	"""
+	Logout the current user from the landing page
+	Called by Next.js when user wants to logout
+
+	Returns:
+		dict: Success status
+	"""
+	try:
+		frappe.local.login_manager.logout()
+		frappe.db.commit()
+
+		return {
+			"success": True,
+			"message": _("Logged out successfully")
+		}
+	except Exception as e:
+		frappe.log_error(f"Logout error: {str(e)}", "Logout Error")
+		return {
+			"success": False,
+			"error": str(e)
+		}
+
+
+@frappe.whitelist()
+def get_user_site_url():
+	"""
+	Get the provisioned site URL for the currently logged-in user
+	Reads from session data which was stored during auto_login_from_provisioned
+
+	Each Administrator session on the landing page represents a different provisioned site
+	The session data tracks which site each session belongs to
+
+	Returns:
+		dict: Success status and site_url
+	"""
+	import json
+
+	try:
+		# Check if user is logged in
+		if frappe.session.user == "Guest":
+			return {
+				"success": False,
+				"error": _("Not logged in")
+			}
+
+		# Get session data from database (use SQL since Sessions table doesn't have 'name' column)
+		session_data = frappe.db.sql("""
+			SELECT sessiondata
+			FROM `tabSessions`
+			WHERE sid = %s
+		""", (frappe.session.sid,))
+
+		if not session_data or not session_data[0][0]:
+			return {
+				"success": False,
+				"error": _("Session data not found")
+			}
+
+		session_data = session_data[0][0]
+
+		# Parse session data to get provisioned site URL
+		session_info = json.loads(session_data)
+		provisioned_site_url = session_info.get("provisioned_site_url")
+
+		if not provisioned_site_url:
+			return {
+				"success": False,
+				"error": _("Provisioned site URL not found in session")
+			}
+
+		return {
+			"success": True,
+			"site_url": provisioned_site_url
+		}
+
+	except Exception as e:
+		frappe.log_error(f"Get user site URL error: {str(e)}", "Get User Site URL Error")
+		return {
+			"success": False,
+			"error": str(e)
+		}
+
+
+@frappe.whitelist(allow_guest=True)
 def auto_login(token=None):
 	"""
 	Auto-login using one-time token from landing page
@@ -284,11 +411,14 @@ def create_landing_token_for_site(site_url=None):
 		expires_at = add_to_date(now_datetime(), minutes=5)
 
 		# Create Login Token record
+		# Note: administrator_password is not needed for reverse flow (provisioned → landing)
+		# but the field exists in the doctype so we set it to empty string
 		login_token = frappe.get_doc({
 			"doctype": "Login Token",
 			"token": token,
 			"email": matching_site.email,
 			"site_url": matching_site.site_url,
+			"administrator_password": "",
 			"used": 0,
 			"expires_at": expires_at
 		})
@@ -341,20 +471,30 @@ def auto_login_from_provisioned(token=None, redirect_to=None):
 		# This creates a session cookie on the landing page domain
 		frappe.local.login_manager.login_as("Administrator")
 
+		# Store the provisioned site email and URL in session data
+		# This allows us to identify which provisioned site this session belongs to
+		# Each session is independent, so multiple sites can be logged in simultaneously
+		email = validation_result.get("email")
+		site_url = validation_result.get("site_url")
+
+		# Update session data in database (Sessions table uses sid, not name)
+		frappe.db.sql("""
+			UPDATE `tabSessions`
+			SET sessiondata = %s
+			WHERE sid = %s
+		""", (frappe.as_json({
+			"provisioned_site_email": email,
+			"provisioned_site_url": site_url
+		}), frappe.session.sid))
+
 		# Commit the session to database
 		frappe.db.commit()
 
 		# Redirect to environment selector or specified page
+		# Use relative path since we're already on the landing page domain
 		redirect_path = redirect_to or "/environment-selector"
-
-		# Get the landing page base URL from config or use relative path
-		landing_url = frappe.conf.get("senaerp_landing_url", "")
-		if landing_url:
-			frappe.local.response["type"] = "redirect"
-			frappe.local.response["location"] = f"{landing_url}{redirect_path}"
-		else:
-			frappe.local.response["type"] = "redirect"
-			frappe.local.response["location"] = redirect_path
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = redirect_path
 
 	except Exception as e:
 		frappe.log_error(f"Auto-login from provisioned error: {str(e)}", "Auto-login Error")
