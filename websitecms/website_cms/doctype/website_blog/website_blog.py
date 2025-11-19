@@ -77,7 +77,7 @@ def get_published_blogs(limit=10):
 		blogs = frappe.get_all(
 			"Website Blog",
 			filters={"published": 1},
-			fields=["name", "title", "description", "image", "video_url", "blog_id", "published_date", "route"],
+			fields=["name", "title", "description", "image", "video_url", "blog_id", "published_date", "route", "author"],
 			order_by="published_date desc",
 			limit=limit
 		)

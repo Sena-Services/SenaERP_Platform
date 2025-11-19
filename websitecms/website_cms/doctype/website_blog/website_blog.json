@@ -12,6 +12,7 @@
   "blog_details_section",
   "title",
   "blog_id",
+  "author",
   "column_break_2",
   "published",
   "published_date",
@@ -42,6 +43,12 @@
    "fieldtype": "Data",
    "label": "Blog ID",
    "description": "Unique identifier for the blog post (e.g., ai-first-erp)"
+  },
+  {
+   "fieldname": "author",
+   "fieldtype": "Data",
+   "label": "Author",
+   "description": "Name of the blog post author"
   },
   {
    "fieldname": "column_break_2",
