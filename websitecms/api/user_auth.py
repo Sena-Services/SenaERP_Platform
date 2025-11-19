@@ -233,3 +233,131 @@ def auto_login(token=None):
 		frappe.local.response["type"] = "redirect"
 		frappe.local.response["location"] = "/login?error=unexpected"
 		return
+
+
+@frappe.whitelist(allow_guest=True)
+def create_landing_token_for_site(site_url=None):
+	"""
+	Create a login token for a provisioned site user to access the landing page
+	This is the reverse of the normal login flow - allows users to go from
+	provisioned site → landing page (for environment selector)
+
+	Args:
+		site_url (str): The provisioned site URL
+
+	Returns:
+		dict: Success status and token if valid
+	"""
+	try:
+		if not site_url:
+			return {
+				"success": False,
+				"error": _("Site URL is required")
+			}
+
+		# Find provisioned site by site_url or frontend URL
+		provisioned_sites = frappe.get_all(
+			"Provisioned Site",
+			filters={
+				"status": "Active"
+			},
+			fields=["name", "company_name", "email", "site_url"]
+		)
+
+		# Match by site_url (could be the frontend_url)
+		matching_site = None
+		for site in provisioned_sites:
+			# Check if the provided URL matches the site_url or is part of it
+			if site_url in site.site_url or site.site_url in site_url:
+				matching_site = site
+				break
+
+		if not matching_site:
+			frappe.log_error(f"No provisioned site found for URL: {site_url}", "Landing Token Error")
+			return {
+				"success": False,
+				"error": _("Site not found")
+			}
+
+		# Generate one-time login token for landing page
+		token = secrets.token_urlsafe(32)
+		expires_at = add_to_date(now_datetime(), minutes=5)
+
+		# Create Login Token record
+		login_token = frappe.get_doc({
+			"doctype": "Login Token",
+			"token": token,
+			"email": matching_site.email,
+			"site_url": matching_site.site_url,
+			"used": 0,
+			"expires_at": expires_at
+		})
+		login_token.insert(ignore_permissions=True)
+		frappe.db.commit()
+
+		return {
+			"success": True,
+			"token": token,
+			"email": matching_site.email
+		}
+
+	except Exception as e:
+		frappe.log_error(f"Create landing token error: {str(e)}", "Landing Token Error")
+		return {
+			"success": False,
+			"error": _("Failed to create token")
+		}
+
+
+@frappe.whitelist(allow_guest=True)
+def auto_login_from_provisioned(token=None, redirect_to=None):
+	"""
+	Auto-login to landing page using token from provisioned site
+	This creates a session on the landing page so users can access environment selector
+
+	Args:
+		token (str): One-time login token created by provisioned site
+		redirect_to (str): Optional path to redirect to after login (default: /environment-selector)
+
+	Returns:
+		Redirects to environment selector or specified page
+	"""
+	try:
+		if not token:
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = "/login?error=missing_token"
+			return
+
+		# Validate token
+		validation_result = validate_token(token)
+
+		if not validation_result.get("success"):
+			error = validation_result.get("error", "invalid_token").lower().replace(" ", "_")
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = f"/login?error={error}"
+			return
+
+		# Login as Administrator on the landing page
+		# This creates a session cookie on the landing page domain
+		frappe.local.login_manager.login_as("Administrator")
+
+		# Commit the session to database
+		frappe.db.commit()
+
+		# Redirect to environment selector or specified page
+		redirect_path = redirect_to or "/environment-selector"
+
+		# Get the landing page base URL from config or use relative path
+		landing_url = frappe.conf.get("senaerp_landing_url", "")
+		if landing_url:
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = f"{landing_url}{redirect_path}"
+		else:
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = redirect_path
+
+	except Exception as e:
+		frappe.log_error(f"Auto-login from provisioned error: {str(e)}", "Auto-login Error")
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = "/login?error=unexpected"
+		return
