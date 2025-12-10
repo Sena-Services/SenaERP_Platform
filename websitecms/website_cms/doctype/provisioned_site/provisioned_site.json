@@ -17,7 +17,11 @@
   "status_section",
   "status",
   "column_break_8",
-  "provisioned_on"
+  "provisioned_on",
+  "email_section",
+  "email_sent",
+  "column_break_email",
+  "email_sent_on"
  ],
  "fields": [
   {
@@ -80,10 +84,32 @@
    "fieldtype": "Datetime",
    "label": "Provisioned On",
    "read_only": 1
+  },
+  {
+   "fieldname": "email_section",
+   "fieldtype": "Section Break",
+   "label": "Email Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "email_sent",
+   "fieldtype": "Check",
+   "label": "Email Sent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_email",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_sent_on",
+   "fieldtype": "Datetime",
+   "label": "Email Sent On",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2025-11-17 00:00:00",
+ "modified": "2025-11-20 12:00:00",
  "modified_by": "Administrator",
  "module": "Website CMS",
  "name": "Provisioned Site",
