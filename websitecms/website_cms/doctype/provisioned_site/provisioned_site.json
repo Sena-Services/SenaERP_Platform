@@ -21,7 +21,9 @@
   "email_section",
   "email_sent",
   "column_break_email",
-  "email_sent_on"
+  "email_sent_on",
+  "whatsapp_section",
+  "whatsapp_phone_ids"
  ],
  "fields": [
   {
@@ -106,6 +108,17 @@
    "fieldtype": "Datetime",
    "label": "Email Sent On",
    "read_only": 1
+  },
+  {
+   "fieldname": "whatsapp_section",
+   "fieldtype": "Section Break",
+   "label": "WhatsApp Integration"
+  },
+  {
+   "fieldname": "whatsapp_phone_ids",
+   "fieldtype": "Table",
+   "label": "WhatsApp Phone IDs",
+   "options": "WhatsApp Phone ID"
   }
  ],
  "links": [],
