@@ -68,3 +68,116 @@ def get_all_phone_mappings():
 
     mappings = {r.phone_number_id: r.site_url for r in results}
     return {"mappings": mappings, "count": len(mappings)}
+
+
+@frappe.whitelist(allow_guest=True, methods=['POST'])
+def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str = None, label: str = None):
+    """
+    Add a WhatsApp phone ID to the Provisioned Site matching the logged-in user's email.
+
+    This is called after successful WhatsApp Embedded Signup to register the phone
+    with the user's provisioned site for webhook routing.
+
+    Args:
+        phone_number_id: The WhatsApp phone number ID from Meta
+        display_phone_number: The display phone number (e.g., +1 234 567 8900)
+        label: Optional label for this phone number (e.g., "Main", "Support")
+
+    Returns:
+        dict with success status and message
+    """
+    try:
+        if not phone_number_id:
+            return {"success": False, "message": "phone_number_id is required"}
+
+        # Get logged-in user's email
+        user_email = frappe.session.user
+
+        if user_email == "Guest":
+            return {"success": False, "message": "User must be logged in"}
+
+        # Find Provisioned Site matching user's email
+        provisioned_sites = frappe.get_all(
+            "Provisioned Site",
+            filters={"email": user_email},
+            fields=["name", "company_name", "email"]
+        )
+
+        if not provisioned_sites:
+            # Log for debugging
+            frappe.log_error(
+                title="WhatsApp Phone Registration - No Site Found",
+                message=f"User email: {user_email}\nPhone ID: {phone_number_id}"
+            )
+            return {
+                "success": False,
+                "message": f"No Provisioned Site found for user email: {user_email}"
+            }
+
+        site = provisioned_sites[0]
+        site_doc = frappe.get_doc("Provisioned Site", site.name)
+
+        # Check if this phone_number_id already exists in the child table
+        existing_phone = None
+        for phone in site_doc.whatsapp_phone_ids:
+            if phone.phone_number_id == phone_number_id:
+                existing_phone = phone
+                break
+
+        if existing_phone:
+            # Update existing entry
+            existing_phone.display_phone_number = display_phone_number or existing_phone.display_phone_number
+            existing_phone.label = label or existing_phone.label
+            site_doc.save(ignore_permissions=True)
+            frappe.db.commit()
+
+            return {
+                "success": True,
+                "message": f"WhatsApp phone updated for {site.company_name}",
+                "data": {
+                    "site_name": site.name,
+                    "company_name": site.company_name,
+                    "phone_number_id": phone_number_id,
+                    "display_phone_number": display_phone_number,
+                    "action": "updated"
+                }
+            }
+
+        # Add new phone to child table
+        site_doc.append("whatsapp_phone_ids", {
+            "phone_number_id": phone_number_id,
+            "display_phone_number": display_phone_number or "",
+            "label": label or "Primary"
+        })
+
+        site_doc.save(ignore_permissions=True)
+        frappe.db.commit()
+
+        # Log success
+        frappe.log_error(
+            title="WhatsApp Phone Registration Success",
+            message=f"Site: {site.company_name}\nUser: {user_email}\nPhone ID: {phone_number_id}\nDisplay: {display_phone_number}"
+        )
+
+        return {
+            "success": True,
+            "message": f"WhatsApp phone added to {site.company_name}",
+            "data": {
+                "site_name": site.name,
+                "company_name": site.company_name,
+                "phone_number_id": phone_number_id,
+                "display_phone_number": display_phone_number,
+                "action": "added"
+            }
+        }
+
+    except Exception as e:
+        import traceback
+        frappe.log_error(
+            title="WhatsApp Phone Registration Error",
+            message=f"Error: {str(e)}\n{traceback.format_exc()[:1000]}"
+        )
+        return {
+            "success": False,
+            "message": str(e)
+        }
