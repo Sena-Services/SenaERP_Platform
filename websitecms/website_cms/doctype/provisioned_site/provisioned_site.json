@@ -13,6 +13,7 @@
   "email",
   "column_break_3",
   "site_url",
+  "frontend_site_url",
   "administrator_password",
   "status_section",
   "status",
@@ -57,6 +58,12 @@
    "in_list_view": 1,
    "label": "Site URL",
    "reqd": 1
+  },
+  {
+   "description": "Frontend URL for this site (e.g., https://app.example.com). Used for WhatsApp embedded signup redirects.",
+   "fieldname": "frontend_site_url",
+   "fieldtype": "Data",
+   "label": "Frontend Site URL"
   },
   {
    "fieldname": "administrator_password",
