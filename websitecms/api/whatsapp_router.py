@@ -71,9 +71,9 @@ def get_all_phone_mappings():
 
 
 @frappe.whitelist(allow_guest=True, methods=['POST'])
-def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str = None, label: str = None):
+def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str = None, label: str = None, site_url: str = None):
     """
-    Add a WhatsApp phone ID to the Provisioned Site matching the logged-in user's email.
+    Add a WhatsApp phone ID to the Provisioned Site matching the site_url or frontend_site_url.
 
     This is called after successful WhatsApp Embedded Signup to register the phone
     with the user's provisioned site for webhook routing.
@@ -82,6 +82,7 @@ def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str =
         phone_number_id: The WhatsApp phone number ID from Meta
         display_phone_number: The display phone number (e.g., +1 234 567 8900)
         label: Optional label for this phone number (e.g., "Main", "Support")
+        site_url: The site URL to match against (frontend_site_url or site_url in Provisioned Site)
 
     Returns:
         dict with success status and message
@@ -90,28 +91,38 @@ def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str =
         if not phone_number_id:
             return {"success": False, "message": "phone_number_id is required"}
 
-        # Get logged-in user's email
-        user_email = frappe.session.user
+        if not site_url:
+            return {"success": False, "message": "site_url is required"}
 
-        if user_email == "Guest":
-            return {"success": False, "message": "User must be logged in"}
+        # Normalize the URL for matching (remove trailing slash)
+        normalized_url = site_url.rstrip('/')
+        print(f"📱 Looking for Provisioned Site matching URL: {normalized_url}")
 
-        # Find Provisioned Site matching user's email
+        # Try to find Provisioned Site matching frontend_site_url first
         provisioned_sites = frappe.get_all(
             "Provisioned Site",
-            filters={"email": user_email},
-            fields=["name", "company_name", "email"]
+            filters={"frontend_site_url": ["like", f"%{normalized_url}%"]},
+            fields=["name", "company_name", "frontend_site_url", "site_url"]
         )
+
+        # If not found by frontend_site_url, try matching by site_url (backend URL)
+        if not provisioned_sites:
+            print(f"📱 No match on frontend_site_url, trying site_url...")
+            provisioned_sites = frappe.get_all(
+                "Provisioned Site",
+                filters={"site_url": ["like", f"%{normalized_url}%"]},
+                fields=["name", "company_name", "frontend_site_url", "site_url"]
+            )
 
         if not provisioned_sites:
             # Log for debugging
             frappe.log_error(
                 title="WhatsApp Phone Registration - No Site Found",
-                message=f"User email: {user_email}\nPhone ID: {phone_number_id}"
+                message=f"Site URL: {site_url}\nPhone ID: {phone_number_id}"
             )
             return {
                 "success": False,
-                "message": f"No Provisioned Site found for user email: {user_email}"
+                "message": f"No Provisioned Site found for URL: {site_url}"
             }
 
         site = provisioned_sites[0]
@@ -156,7 +167,7 @@ def add_whatsapp_phone_to_site(phone_number_id: str, display_phone_number: str =
         # Log success
         frappe.log_error(
             title="WhatsApp Phone Registration Success",
-            message=f"Site: {site.company_name}\nUser: {user_email}\nPhone ID: {phone_number_id}\nDisplay: {display_phone_number}"
+            message=f"Site: {site.company_name}\nSite URL: {site_url}\nPhone ID: {phone_number_id}\nDisplay: {display_phone_number}"
         )
 
         return {
