@@ -22,7 +22,7 @@ def get_active_openings(department=None):
 		dict: Success status and openings data
 
 	Example:
-		POST /api/method/sentra_core.api.opening.get_active_openings
+		POST /api/method/sena_backend.api.opening.get_active_openings
 		Payload: {"department": "Engineering"}
 	"""
 	try:
@@ -74,7 +74,7 @@ def get_opening_by_title(title):
 		dict: Success status and opening data
 
 	Example:
-		POST /api/method/sentra_core.api.opening.get_opening_by_title
+		POST /api/method/sena_backend.api.opening.get_opening_by_title
 		Payload: {"title": "Fullstack Engineer"}
 	"""
 	try:
@@ -131,7 +131,7 @@ def create_opening(title, department=None, positions_open=1, experience_required
 		dict: Success status and created opening data
 
 	Example:
-		POST /api/method/sentra_core.api.opening.create_opening
+		POST /api/method/sena_backend.api.opening.create_opening
 		Payload: {
 			"title": "Senior Engineer",
 			"department": "Engineering",
@@ -188,7 +188,7 @@ def update_opening(title, **kwargs):
 		dict: Success status and updated opening data
 
 	Example:
-		POST /api/method/sentra_core.api.opening.update_opening
+		POST /api/method/sena_backend.api.opening.update_opening
 		Payload: {
 			"title": "Fullstack Engineer",
 			"positions_open": 3,

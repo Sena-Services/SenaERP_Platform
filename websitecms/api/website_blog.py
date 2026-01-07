@@ -23,7 +23,7 @@ def get_published_blogs(limit=10, fields=None):
 		dict: Success status and blog data
 
 	Example:
-		GET/POST /api/method/sentra_core.api.website_blog.get_published_blogs
+		GET/POST /api/method/sena_backend.api.website_blog.get_published_blogs
 		Payload: {"limit": 5}
 	"""
 	try:
@@ -82,7 +82,7 @@ def get_blog_by_id(blog_id=None, name=None):
 		dict: Success status and blog data
 
 	Example:
-		GET/POST /api/method/sentra_core.api.website_blog.get_blog_by_id
+		GET/POST /api/method/sena_backend.api.website_blog.get_blog_by_id
 		Payload: {"blog_id": "ai-first-erp"}
 	"""
 	try:
@@ -152,7 +152,7 @@ def get_blog_count():
 		dict: Success status and count
 
 	Example:
-		GET/POST /api/method/sentra_core.api.website_blog.get_blog_count
+		GET/POST /api/method/sena_backend.api.website_blog.get_blog_count
 	"""
 	try:
 		count = frappe.db.count("Website Blog", filters={"published": 1})
@@ -188,7 +188,7 @@ def create_blog(title, description=None, content=None, blog_id=None, attachment=
 		dict: Success status and created blog data
 
 	Example:
-		POST /api/method/sentra_core.api.website_blog.create_blog
+		POST /api/method/sena_backend.api.website_blog.create_blog
 		Payload: {
 			"title": "My New Blog",
 			"description": "A brief description",
@@ -245,7 +245,7 @@ def update_blog(name, **kwargs):
 		dict: Success status and updated blog data
 
 	Example:
-		POST /api/method/sentra_core.api.website_blog.update_blog
+		POST /api/method/sena_backend.api.website_blog.update_blog
 		Payload: {
 			"name": "My Blog Title",
 			"published": 1,

@@ -1,3 +1,3 @@
-"""API package for sentra_core"""
+"""API package for sena_backend"""
 
 

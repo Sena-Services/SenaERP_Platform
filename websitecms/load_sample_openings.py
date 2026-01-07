@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to create sample job openings for Opening doctype
-Run: bench --site senatest2.localhost execute sentra_core.load_sample_openings.load_sample_openings
+Run: bench --site senatest2.localhost execute sena_backend.load_sample_openings.load_sample_openings
 """
 
 import frappe

@@ -25,7 +25,7 @@ def submit_waitlist(full_name, email, company_name=None, phone=None):
 		dict: Success status and message
 
 	Example:
-		POST /api/method/sentra_core.api.waitlist.submit_waitlist
+		POST /api/method/sena_backend.api.waitlist.submit_waitlist
 		Payload: {
 			"full_name": "John Doe",
 			"email": "john@example.com",
@@ -96,7 +96,7 @@ def get_waitlist_entries(status=None, limit=100):
 		dict: Success status and waitlist entries
 
 	Example:
-		POST /api/method/sentra_core.api.waitlist.get_waitlist_entries
+		POST /api/method/sena_backend.api.waitlist.get_waitlist_entries
 		Payload: {"status": "Pending", "limit": 50}
 	"""
 	try:
@@ -146,7 +146,7 @@ def update_waitlist_status(name, status):
 		dict: Success status and message
 
 	Example:
-		POST /api/method/sentra_core.api.waitlist.update_waitlist_status
+		POST /api/method/sena_backend.api.waitlist.update_waitlist_status
 		Payload: {"name": "WAIT-00001", "status": "Contacted"}
 	"""
 	try:
