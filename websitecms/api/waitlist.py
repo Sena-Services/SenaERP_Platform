@@ -11,7 +11,7 @@ from frappe import _
 
 
 @frappe.whitelist(allow_guest=True)
-def submit_waitlist(full_name, email, company_name=None, phone=None):
+def submit_waitlist(full_name, email, company_name=None, phone=None, message=None, access_type=None):
 	"""
 	Submit early access waitlist form
 
@@ -20,17 +20,21 @@ def submit_waitlist(full_name, email, company_name=None, phone=None):
 		email (str): Email address (required)
 		company_name (str): Company name (optional)
 		phone (str): Phone number (optional)
+		message (str): Message from the user (optional)
+		access_type (str): Type of access requested - 'product' or 'pitchdeck' (optional)
 
 	Returns:
 		dict: Success status and message
 
 	Example:
-		POST /api/method/sentra_core.api.waitlist.submit_waitlist
+		POST /api/method/websitecms.api.waitlist.submit_waitlist
 		Payload: {
 			"full_name": "John Doe",
 			"email": "john@example.com",
 			"company_name": "Acme Inc.",
-			"phone": "+1 (555) 000-0000"
+			"phone": "+1 (555) 000-0000",
+			"message": "Tell us about yourself",
+			"access_type": "product"
 		}
 	"""
 	try:
@@ -58,6 +62,8 @@ def submit_waitlist(full_name, email, company_name=None, phone=None):
 			"email": email,
 			"company_name": company_name or "",
 			"phone": phone or "",
+			"message": message or "",
+			"access_type": access_type or "product",
 			"status": "Pending"
 		})
 
