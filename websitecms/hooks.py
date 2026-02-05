@@ -200,7 +200,8 @@ website_generators = ["Website Blog"]
 # Request Events
 # ----------------
 # before_request = ["websitecms.utils.before_request"]
-after_request = ["websitecms.utils.after_request"]
+# TEMP DISABLED: after_request hook was raising AttributeError and destabilizing requests.
+# after_request = ["websitecms.utils.after_request"]
 
 # Job Events
 # ----------
@@ -244,4 +245,3 @@ after_request = ["websitecms.utils.after_request"]
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
