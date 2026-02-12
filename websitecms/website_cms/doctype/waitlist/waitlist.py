@@ -1,16 +1,15 @@
 # Copyright (c) 2025, Sentra and contributors
 # For license information, please see license.txt
 
-import frappe
-from frappe.model.document import Document
-from frappe.utils import now_datetime
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Gmail SMTP Configuration
-GMAIL_EMAIL = "noreplysenaerp@gmail.com"
-GMAIL_APP_PASSWORD = "vpru egom fvhj fmho"
+import frappe
+from frappe.model.document import Document
+from frappe.utils import now_datetime
+
+FROM_EMAIL = "noreply@senaerp.com"
 NOTIFICATION_EMAIL = "it@sena.services"
 CC_EMAIL = "shelton013@gmail.com"
 
@@ -28,12 +27,8 @@ class Waitlist(Document):
 		self.send_waitlist_notification()
 
 	def send_waitlist_notification(self):
-		"""Send email notification via Gmail SMTP"""
+		"""Send email notification via local Postfix on localhost:25"""
 		try:
-			print(f"📧 [Waitlist] Starting email notification for {self.name}")
-			print(f"📧 [Waitlist] From: {GMAIL_EMAIL}")
-			print(f"📧 [Waitlist] To: {NOTIFICATION_EMAIL}, CC: {CC_EMAIL}")
-
 			subject = f"New Waitlist Entry: {self.full_name}"
 
 			html_message = f"""
@@ -76,50 +71,21 @@ class Waitlist(Document):
 </p>
 """
 
-			# Create email message
-			print(f"📧 [Waitlist] Creating email message...")
 			msg = MIMEMultipart("alternative")
 			msg["Subject"] = subject
-			msg["From"] = GMAIL_EMAIL
+			msg["From"] = f"SenaERP <{FROM_EMAIL}>"
 			msg["To"] = NOTIFICATION_EMAIL
 			msg["Cc"] = CC_EMAIL
-
-			# Attach HTML content
 			msg.attach(MIMEText(html_message, "html"))
-			print(f"📧 [Waitlist] Email message created successfully")
 
-			# Send via Gmail SMTP (include CC in recipients)
 			all_recipients = [NOTIFICATION_EMAIL, CC_EMAIL]
-			print(f"📧 [Waitlist] Connecting to Gmail SMTP server...")
 
-			with smtplib.SMTP("smtp.gmail.com", 587) as server:
-				print(f"📧 [Waitlist] Connected. Starting TLS...")
-				server.starttls()
-				print(f"📧 [Waitlist] TLS started. Logging in...")
-				server.login(GMAIL_EMAIL, GMAIL_APP_PASSWORD)
-				print(f"📧 [Waitlist] Logged in successfully. Sending email...")
-				server.sendmail(GMAIL_EMAIL, all_recipients, msg.as_string())
-				print(f"✅ [Waitlist] Email sent successfully to {all_recipients}")
+			with smtplib.SMTP("localhost", 25) as server:
+				server.sendmail(FROM_EMAIL, all_recipients, msg.as_string())
 
 			frappe.logger().info(f"Waitlist notification sent for {self.name} to {NOTIFICATION_EMAIL}")
 
-		except smtplib.SMTPAuthenticationError as e:
-			print(f"❌ [Waitlist] SMTP Authentication Failed: {str(e)}")
-			print(f"❌ [Waitlist] Check your Gmail email and app password")
-			frappe.log_error(
-				title="Waitlist Email - Authentication Failed",
-				message=f"Gmail authentication failed for {self.name}: {str(e)}"
-			)
-		except smtplib.SMTPException as e:
-			print(f"❌ [Waitlist] SMTP Error: {str(e)}")
-			frappe.log_error(
-				title="Waitlist Email - SMTP Error",
-				message=f"SMTP error for {self.name}: {str(e)}"
-			)
 		except Exception as e:
-			print(f"❌ [Waitlist] Unexpected error: {str(e)}")
-			import traceback
-			print(f"❌ [Waitlist] Traceback: {traceback.format_exc()}")
 			frappe.log_error(
 				title="Waitlist Email Notification Failed",
 				message=f"Failed to send notification for {self.name}: {str(e)}"
