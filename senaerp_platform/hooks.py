@@ -180,6 +180,9 @@ website_generators = ["Website Blog"]
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "senaerp_platform.event.get_events"
 # }
+
+# Send emails via Microsoft Graph API instead of SMTP
+override_email_send = "senaerp_platform.integrations.graph_email.send_via_graph"
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
