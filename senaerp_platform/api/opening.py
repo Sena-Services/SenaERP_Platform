@@ -33,7 +33,7 @@ def get_active_openings(department=None):
 
 		# Fetch active openings
 		openings = frappe.get_all(
-			"Opening",
+			"Job Opening",
 			filters=filters,
 			fields=[
 				"name",
@@ -86,7 +86,7 @@ def get_opening_by_title(title):
 
 		# Fetch the opening
 		opening = frappe.get_all(
-			"Opening",
+			"Job Opening",
 			filters={"title": title, "is_active": 1},
 			fields=["*"],
 			limit=1
@@ -142,12 +142,12 @@ def create_opening(title, department=None, positions_open=1, experience_required
 	"""
 	try:
 		# Check permissions
-		if not frappe.has_permission("Opening", "create"):
+		if not frappe.has_permission("Job Opening", "create"):
 			frappe.throw(_("You don't have permission to create job openings"))
 
 		# Create opening document
 		opening = frappe.get_doc({
-			"doctype": "Opening",
+			"doctype": "Job Opening",
 			"title": title,
 			"department": department,
 			"positions_open": int(positions_open),
@@ -197,18 +197,18 @@ def update_opening(title, **kwargs):
 	"""
 	try:
 		# Check if opening exists
-		if not frappe.db.exists("Opening", title):
+		if not frappe.db.exists("Job Opening", title):
 			return {
 				"success": False,
 				"error": "Opening not found"
 			}
 
 		# Check permissions
-		if not frappe.has_permission("Opening", "write", title):
+		if not frappe.has_permission("Job Opening", "write", title):
 			frappe.throw(_("You don't have permission to update this opening"))
 
 		# Get and update opening
-		opening = frappe.get_doc("Opening", title)
+		opening = frappe.get_doc("Job Opening", title)
 
 		# Update allowed fields
 		allowed_fields = ["department", "positions_open", "experience_required",

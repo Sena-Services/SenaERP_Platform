@@ -6,7 +6,7 @@ from frappe.model.document import Document
 from frappe.utils import today
 
 
-class Opening(Document):
+class JobOpening(Document):
 	"""Job Opening Document"""
 
 	def before_insert(self):

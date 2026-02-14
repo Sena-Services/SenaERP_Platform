@@ -334,9 +334,9 @@ def load_sample_openings():
     for opening_data in sample_openings:
         try:
             # Check if opening already exists
-            if frappe.db.exists("Opening", opening_data["title"]):
+            if frappe.db.exists("Job Opening", opening_data["title"]):
                 # Update existing opening
-                opening = frappe.get_doc("Opening", opening_data["title"])
+                opening = frappe.get_doc("Job Opening", opening_data["title"])
                 for key, value in opening_data.items():
                     if key != "title":  # Don't update the title (it's the primary key)
                         opening.set(key, value)
@@ -347,7 +347,7 @@ def load_sample_openings():
             else:
                 # Create new opening
                 opening = frappe.get_doc({
-                    "doctype": "Opening",
+                    "doctype": "Job Opening",
                     **opening_data
                 })
                 opening.insert()
