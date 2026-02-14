@@ -46,8 +46,8 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 				"message": _("Please provide both name and email")
 			}
 
-		# Check if email already exists in waitlist
-		existing = frappe.db.exists("Waitlist", {"email": email})
+		# Check if email already exists in waitlist for this access type
+		existing = frappe.db.exists("Waitlist", {"email": email, "access_type": access_type or "Product"})
 		if existing:
 			return {
 				"success": False,
@@ -63,7 +63,7 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 			"company_name": company_name or "",
 			"phone": phone or "",
 			"message": message or "",
-			"access_type": access_type or "product",
+			"access_type": access_type or "Product",
 			"status": "Pending"
 		})
 
