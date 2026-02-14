@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "creation": "2026-02-14 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "pitch_deck_section",
+  "pitch_deck_file",
+  "pitch_deck_email_subject",
+  "pitch_deck_email_body"
+ ],
+ "fields": [
+  {
+   "fieldname": "pitch_deck_section",
+   "fieldtype": "Section Break",
+   "label": "Pitch Deck Email"
+  },
+  {
+   "fieldname": "pitch_deck_file",
+   "fieldtype": "Attach",
+   "label": "Pitch Deck File"
+  },
+  {
+   "default": "SenaERP Pitch Deck",
+   "fieldname": "pitch_deck_email_subject",
+   "fieldtype": "Data",
+   "label": "Email Subject"
+  },
+  {
+   "default": "<p>Hi {name},</p><p>Thanks for reaching out and for your interest in what we're building at SenaERP.</p><p>As requested, we've attached our pitch deck. We are building an AI-first ecosystem designed to make enterprise software truly customizable through intelligent agents, and we're excited to share our roadmap with you.</p><p>After you've had a chance to look through it, we'd love to hear your thoughts or answer any questions you might have.</p><p>Best regards,<br>The SenaERP Team</p>",
+   "description": "Use {name} and {company} as placeholders.",
+   "fieldname": "pitch_deck_email_body",
+   "fieldtype": "Text Editor",
+   "label": "Email Body"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-02-14 00:00:03",
+ "modified_by": "Administrator",
+ "module": "Senaerp Platform",
+ "name": "Platform Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -3,14 +3,41 @@
 
 frappe.ui.form.on('Waitlist', {
 	refresh: function(frm) {
-		// Add Provision button
-		if (!frm.is_new()) {
-			frm.add_custom_button(__('Provision'), function() {
-				provision_site(frm);
+		if (!frm.is_new() && frm.doc.status === 'Pending') {
+			frm.add_custom_button(__('Accept'), function() {
+				if (frm.doc.access_type === 'Pitch Deck') {
+					accept_pitch_deck(frm);
+				} else {
+					provision_site(frm);
+				}
 			});
 		}
 	}
 });
+
+function accept_pitch_deck(frm) {
+	frappe.confirm(
+		__('Send pitch deck to <b>{0}</b> ({1})?', [frm.doc.full_name, frm.doc.email]),
+		function() {
+			frappe.call({
+				method: 'senaerp_platform.api.accept.accept_pitch_deck',
+				args: { waitlist_name: frm.doc.name },
+				freeze: true,
+				freeze_message: __('Sending pitch deck...'),
+				callback: function(r) {
+					if (r.message && r.message.success) {
+						frm.reload_doc();
+						frappe.msgprint({
+							title: __('Pitch Deck Sent'),
+							message: r.message.message,
+							indicator: 'green'
+						});
+					}
+				}
+			});
+		}
+	);
+}
 
 function provision_site(frm) {
 	// Use company_name as subdomain
