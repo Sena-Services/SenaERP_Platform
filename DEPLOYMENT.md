@@ -1,4 +1,4 @@
-# 🚀 Website CMS Deployment Guide
+# 🚀 Senaerp Platform Deployment Guide
 
 **IMPORTANT: This file contains sensitive credentials. DO NOT commit to Git.**
 
@@ -26,7 +26,7 @@ senamarketing.senaerp.com
 
 ### App Name
 ```
-websitecms
+senaerp_platform
 ```
 
 ---
@@ -60,7 +60,7 @@ ssh sentra@159.89.174.135
 **This is the proven deployment process:**
 
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 **What this does:**
@@ -90,11 +90,11 @@ ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main
 Run this ONCE to fix permissions permanently:
 
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps && mv websitecms websitecms.bak && git clone https://github.com/Sena-Services/websitecms.git && cd websitecms && git remote add upstream https://github.com/Sena-Services/websitecms.git"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps && mv senaerp_platform senaerp_platform.bak && git clone https://github.com/Sena-Services/senaerp_platform.git && cd senaerp_platform && git remote add upstream https://github.com/Sena-Services/senaerp_platform.git"
 ```
 
 **What this does:**
-1. Backs up old websitecms directory (in case you need it)
+1. Backs up old senaerp_platform directory (in case you need it)
 2. Clones fresh copy from GitHub (with correct permissions)
 3. Adds upstream remote
 
@@ -125,17 +125,17 @@ These steps were the old manual process but are no longer recommended:
 
 ### 🚀 Standard Deployment (Most Common)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 ### ⚡ Python-Only Changes (Fastest)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 ### 🔧 Fix Git Permissions (If git pull fails)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps && mv websitecms websitecms.bak && git clone https://github.com/Sena-Services/websitecms.git && cd websitecms && git remote add upstream https://github.com/Sena-Services/websitecms.git"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps && mv senaerp_platform senaerp_platform.bak && git clone https://github.com/Sena-Services/senaerp_platform.git && cd senaerp_platform && git remote add upstream https://github.com/Sena-Services/senaerp_platform.git"
 ```
 
 ### ✅ Check if Deployment Worked
@@ -145,7 +145,7 @@ curl -s "https://senamarketing.senaerp.com/api/method/ping" | python3 -m json.to
 
 ### 📊 Check Website Environments
 ```bash
-curl -s "https://senamarketing.senaerp.com/api/method/websitecms.api.website_environment.get_environment_count" | python3 -m json.tool
+curl -s "https://senamarketing.senaerp.com/api/method/senaerp_platform.api.website_environment.get_environment_count" | python3 -m json.tool
 ```
 
 ---
@@ -160,7 +160,7 @@ Before deploying, make sure:
 
 **Check local status:**
 ```bash
-cd /Users/aakashchid/workshop/sentraBench/apps/websitecms
+cd /Users/aakashchid/workshop/sentraBench/apps/senaerp_platform
 git status
 git log upstream/main..HEAD  # Should be empty if everything is pushed
 ```
@@ -184,7 +184,7 @@ Choose the deployment type based on what you changed:
 
 **One command:**
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 **What this does:**
@@ -206,7 +206,7 @@ ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main
 
 **One command (USE THIS!):**
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 **What this does:**
@@ -233,7 +233,7 @@ ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main
 
 **One command:**
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench build && bench clear-website-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench build && bench clear-website-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 **What this does:**
@@ -246,7 +246,7 @@ ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main
 **Time:** ~1-2 minutes
 **Downtime:** Zero
 
-**Note:** websitecms doesn't have complex frontend builds, so this is usually fast.
+**Note:** senaerp_platform doesn't have complex frontend builds, so this is usually fast.
 
 ---
 
@@ -260,7 +260,7 @@ ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main
 
 **One command (Recommended!):**
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra/apps/websitecms && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
+ssh sentra@159.89.174.135 "cd ~/Sentra/apps/senaerp_platform && git pull upstream main && cd ~/Sentra && bench use senamarketing.senaerp.com && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-cache && pkill -HUP -f 'gunicorn.*frappe.app:application'"
 ```
 
 **What this does:**
@@ -293,7 +293,7 @@ curl -I https://senamarketing.senaerp.com/app
 ### Asset Check
 ```bash
 # Check if assets are loading
-curl -I https://senamarketing.senaerp.com/assets/websitecms/js/websitecms.bundle.js
+curl -I https://senamarketing.senaerp.com/assets/senaerp_platform/js/senaerp_platform.bundle.js
 curl -I https://senamarketing.senaerp.com/assets/frappe/dist/js/frappe-web.bundle.js
 ```
 
@@ -351,11 +351,11 @@ sudo supervisorctl restart Sentra-workers:*
 
 **Solution:** Check git remotes
 ```bash
-cd ~/Sentra/apps/websitecms
+cd ~/Sentra/apps/senaerp_platform
 git remote -v
 
 # If upstream doesn't exist, add it:
-git remote add upstream https://github.com/Sena-Services/websitecms.git
+git remote add upstream https://github.com/Sena-Services/senaerp_platform.git
 
 # Or if origin exists:
 git pull origin main
@@ -405,16 +405,16 @@ yarn -v  # Should be 1.x or higher
 
 2. **Clear node_modules and rebuild:**
 ```bash
-cd ~/Sentra/apps/websitecms
+cd ~/Sentra/apps/senaerp_platform
 rm -rf node_modules
 yarn install
 cd ~/Sentra
-bench build --app websitecms
+bench build --app senaerp_platform
 ```
 
 3. **Build with verbose output:**
 ```bash
-bench build --app websitecms --verbose
+bench build --app senaerp_platform --verbose
 ```
 
 ---
@@ -427,7 +427,7 @@ bench build --app websitecms --verbose
 
 1. **Rebuild assets:**
 ```bash
-bench build --app websitecms
+bench build --app senaerp_platform
 bench clear-website-cache
 bench clear-cache
 ```
@@ -442,7 +442,7 @@ sudo systemctl reload nginx
 
 3. **Check file permissions:**
 ```bash
-ls -la ~/Sentra/sites/assets/websitecms/
+ls -la ~/Sentra/sites/assets/senaerp_platform/
 # Should be readable by sentra user
 ```
 
@@ -512,7 +512,7 @@ cat ~/Sentra/sites/senamarketing.senaerp.com/site_config.json
 | `bench --site <site> list-apps` | List installed apps on site |
 | `bench --site <site> migrate` | Run database migrations |
 | `bench build` | Build all assets |
-| `bench build --app websitecms` | Build only websitecms assets |
+| `bench build --app senaerp_platform` | Build only senaerp_platform assets |
 | `bench clear-cache` | Clear Redis cache |
 | `bench clear-website-cache` | Clear website route cache |
 | `bench --site <site> console` | Open Frappe console |
@@ -549,14 +549,14 @@ cat ~/Sentra/sites/senamarketing.senaerp.com/site_config.json
 ┌─────────────────┐
 │  GitHub         │
 │  (Repository)   │
-│  websitecms     │
+│  senaerp_platform     │
 └────────┬────────┘
          │ git pull
          ▼
 ┌─────────────────┐
 │  Server         │
 │  ~/Sentra/apps/ │
-│  websitecms     │
+│  senaerp_platform     │
 └────────┬────────┘
          │ bench migrate
          │ bench build
@@ -605,22 +605,22 @@ cat ~/Sentra/sites/senamarketing.senaerp.com/site_config.json
 
 ### Deploy Python Changes Only (30 seconds)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/websitecms && git pull upstream main && cd - && sudo supervisorctl restart all"
+ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/senaerp_platform && git pull upstream main && cd - && sudo supervisorctl restart all"
 ```
 
 ### Deploy with Migration (90 seconds)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/websitecms && git pull upstream main && cd - && bench --site senamarketing.senaerp.com migrate && bench clear-cache && sudo supervisorctl restart all"
+ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/senaerp_platform && git pull upstream main && cd - && bench --site senamarketing.senaerp.com migrate && bench clear-cache && sudo supervisorctl restart all"
 ```
 
 ### Deploy Frontend Changes (2 minutes)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/websitecms && git pull upstream main && cd - && bench build && bench clear-website-cache && sudo supervisorctl restart all"
+ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/senaerp_platform && git pull upstream main && cd - && bench build && bench clear-website-cache && sudo supervisorctl restart all"
 ```
 
 ### Full Safe Deploy (3 minutes)
 ```bash
-ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/websitecms && git pull upstream main && cd - && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-website-cache && bench clear-cache && yes | bench setup nginx && sudo nginx -t && sudo systemctl reload nginx && sudo supervisorctl restart all"
+ssh sentra@159.89.174.135 "cd ~/Sentra && bench use senamarketing.senaerp.com && cd apps/senaerp_platform && git pull upstream main && cd - && bench --site senamarketing.senaerp.com migrate && bench build && bench clear-website-cache && bench clear-cache && yes | bench setup nginx && sudo nginx -t && sudo systemctl reload nginx && sudo supervisorctl restart all"
 ```
 
 ### Check Site Status
@@ -738,7 +738,7 @@ Git permission errors happen when root user has run git commands (from old deplo
 
 **Last Updated**: 2025-11-18
 **Tested On**: Category field deployment
-**App Repository**: https://github.com/Sena-Services/websitecms.git
+**App Repository**: https://github.com/Sena-Services/senaerp_platform.git
 **Deployed Branch**: main
 **Production Site**: senamarketing.senaerp.com
 **Server**: 159.89.174.135

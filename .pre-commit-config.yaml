@@ -8,7 +8,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        files: "websitecms.*"
+        files: "senaerp_platform.*"
         exclude: ".*json$|.*txt$|.*csv|.*md|.*svg"
       - id: check-merge-conflict
       - id: check-ast
@@ -38,11 +38,11 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                websitecms/public/dist/.*|
+                senaerp_platform/public/dist/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                websitecms/templates/includes/.*|
-                websitecms/public/js/lib/.*
+                senaerp_platform/templates/includes/.*|
+                senaerp_platform/public/js/lib/.*
             )$
 
 
@@ -55,12 +55,12 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                websitecms/public/dist/.*|
+                senaerp_platform/public/dist/.*|
                 cypress/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                websitecms/templates/includes/.*|
-                websitecms/public/js/lib/.*
+                senaerp_platform/templates/includes/.*|
+                senaerp_platform/public/js/lib/.*
             )$
 
 ci:

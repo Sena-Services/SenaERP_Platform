@@ -1,5 +1,5 @@
 [project]
-name = "websitecms"
+name = "senaerp_platform"
 authors = [
     { name = "Sena", email = "it@sena.services"}
 ]

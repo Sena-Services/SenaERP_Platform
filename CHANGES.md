@@ -9,7 +9,7 @@ Added a new `category` field to the Website Environment doctype to categorize en
 
 ### 1. DocType Schema Changes
 
-**File**: `websitecms/website_cms/doctype/website_environment/website_environment.json`
+**File**: `senaerp_platform/website_cms/doctype/website_environment/website_environment.json`
 
 **Added**:
 - New `category` field (Select field, required)
@@ -34,7 +34,7 @@ Added a new `category` field to the Website Environment doctype to categorize en
 
 ### 2. API Updates
 
-**File**: `websitecms/api/website_environment.py`
+**File**: `senaerp_platform/api/website_environment.py`
 
 **Changes**:
 - Added `category` to default fields list in `get_published_environments()`
@@ -65,7 +65,7 @@ Added a new `category` field to the Website Environment doctype to categorize en
 
 ### 3. Sample Environment Documents
 
-Created 4 sample documents in `websitecms/website_cms/doctype/website_environment/fixtures/`:
+Created 4 sample documents in `senaerp_platform/website_cms/doctype/website_environment/fixtures/`:
 
 #### Industry Category (2 documents)
 
@@ -143,7 +143,7 @@ This will add the `category` field to the existing `Website Environment` doctype
 
 ### 2. Load Sample Data
 ```bash
-bench --site senamarketing.senaerp.com execute websitecms.website_cms.doctype.website_environment.fixtures.load_fixtures.load_all_fixtures
+bench --site senamarketing.senaerp.com execute senaerp_platform.website_cms.doctype.website_environment.fixtures.load_fixtures.load_all_fixtures
 ```
 
 This will create/update all 4 sample environment documents.
@@ -177,13 +177,13 @@ After deployment, test the API to verify the category field is included:
 
 ```bash
 # Get all environments (should include category field)
-curl https://senamarketing.senaerp.com/api/method/websitecms.api.website_environment.get_published_environments
+curl https://senamarketing.senaerp.com/api/method/senaerp_platform.api.website_environment.get_published_environments
 
 # Get specific environment
-curl https://senamarketing.senaerp.com/api/method/websitecms.api.website_environment.get_environment_by_id?environment_id=receptionists
+curl https://senamarketing.senaerp.com/api/method/senaerp_platform.api.website_environment.get_environment_by_id?environment_id=receptionists
 
 # Get specific environment
-curl https://senamarketing.senaerp.com/api/method/websitecms.api.website_environment.get_environment_by_id?environment_id=sales-module
+curl https://senamarketing.senaerp.com/api/method/senaerp_platform.api.website_environment.get_environment_by_id?environment_id=sales-module
 ```
 
 ---
@@ -194,7 +194,7 @@ If you need to filter by category on the frontend:
 
 ```javascript
 // Fetch all environments
-const response = await fetch('/api/method/websitecms.api.website_environment.get_published_environments');
+const response = await fetch('/api/method/senaerp_platform.api.website_environment.get_published_environments');
 const { data } = await response.json();
 
 // Group by category
@@ -218,8 +218,8 @@ console.log(byCategory);
 ## Files Modified
 
 ```
-apps/websitecms/
-├── websitecms/
+apps/senaerp_platform/
+├── senaerp_platform/
 │   ├── api/
 │   │   └── website_environment.py          [MODIFIED - Added category to API]
 │   └── website_cms/
@@ -259,7 +259,7 @@ apps/websitecms/
 
 - Check `fixtures/README.md` for fixture creation guide
 - Check `DEPLOYMENT.md` for deployment instructions
-- Review the API at `/api/method/websitecms.api.website_environment.*`
+- Review the API at `/api/method/senaerp_platform.api.website_environment.*`
 
 ---
 
