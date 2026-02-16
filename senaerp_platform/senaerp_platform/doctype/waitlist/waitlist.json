@@ -88,7 +88,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "Pending\nContacted\nOnboarded\nRejected"
+   "options": "Pending\nProvisioning\nContacted\nOnboarded\nRejected"
   },
   {
    "fieldname": "column_break_7",

@@ -10,6 +10,21 @@ import frappe
 from frappe import _
 
 
+def _normalize_access_type(access_type):
+	"""Normalize access type inputs to canonical Waitlist values."""
+	if not access_type:
+		return "Product"
+
+	value = str(access_type).strip().lower().replace("-", " ")
+	lookup = {
+		"product": "Product",
+		"pitchdeck": "Pitch Deck",
+		"pitch deck": "Pitch Deck",
+		"deck": "Pitch Deck",
+	}
+	return lookup.get(value, "")
+
+
 @frappe.whitelist(allow_guest=True)
 def submit_waitlist(full_name, email, company_name=None, phone=None, message=None, access_type=None):
 	"""
@@ -46,8 +61,16 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 				"message": _("Please provide both name and email")
 			}
 
+		access_type_value = _normalize_access_type(access_type)
+		if not access_type_value:
+			return {
+				"success": False,
+				"error": "Invalid access type",
+				"message": _("Access type must be Product or Pitch Deck")
+			}
+
 		# Check if email already exists in waitlist for this access type
-		existing = frappe.db.exists("Waitlist", {"email": email, "access_type": access_type or "Product"})
+		existing = frappe.db.exists("Waitlist", {"email": email, "access_type": access_type_value})
 		if existing:
 			return {
 				"success": False,
@@ -63,7 +86,7 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 			"company_name": company_name or "",
 			"phone": phone or "",
 			"message": message or "",
-			"access_type": access_type or "Product",
+			"access_type": access_type_value,
 			"status": "Pending"
 		})
 

@@ -17,6 +17,7 @@
   "administrator_password",
   "status_section",
   "status",
+  "provisioning_error",
   "column_break_8",
   "provisioned_on",
   "email_section",
@@ -56,8 +57,7 @@
    "fieldname": "site_url",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Site URL",
-   "reqd": 1
+   "label": "Site URL"
   },
   {
    "description": "Frontend URL for this site (e.g., https://app.example.com). Used for WhatsApp embedded signup redirects.",
@@ -68,8 +68,7 @@
   {
    "fieldname": "administrator_password",
    "fieldtype": "Password",
-   "label": "Administrator Password",
-   "reqd": 1
+   "label": "Administrator Password"
   },
   {
    "fieldname": "status_section",
@@ -77,12 +76,19 @@
    "label": "Status"
   },
   {
-   "default": "Active",
+   "default": "Provisioning",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "Active\nInactive\nSuspended"
+   "options": "Provisioning\nActive\nInactive\nSuspended\nFailed"
+  },
+  {
+   "depends_on": "eval:doc.status=='Failed'",
+   "fieldname": "provisioning_error",
+   "fieldtype": "Small Text",
+   "label": "Provisioning Error",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_8",
@@ -129,7 +135,7 @@
   }
  ],
  "links": [],
- "modified": "2025-11-20 12:00:00",
+ "modified": "2026-02-14 12:00:00",
  "modified_by": "Administrator",
  "module": "Senaerp Platform",
  "name": "Provisioned Site",
