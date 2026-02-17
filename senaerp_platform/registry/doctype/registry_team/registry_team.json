@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "autoname": "RT-.#####",
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "registry",
+  "team_type",
+  "members"
+ ],
+ "fields": [
+  {
+   "fieldname": "registry",
+   "fieldtype": "Link",
+   "label": "Registry",
+   "options": "Registry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "team_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Team Type",
+   "options": "Registry Team Type"
+  },
+  {
+   "fieldname": "members",
+   "fieldtype": "Table",
+   "label": "Members",
+   "options": "Registry Team Member"
+  }
+ ],
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Team",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Guest"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

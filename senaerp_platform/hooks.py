@@ -88,6 +88,8 @@ website_generators = ["Website Blog"]
 # before_install = "senaerp_platform.install.before_install"
 # after_install = "senaerp_platform.install.after_install"
 
+after_migrate = ["senaerp_platform.registry.seed.seed_registry"]
+
 # Uninstallation
 # ------------
 

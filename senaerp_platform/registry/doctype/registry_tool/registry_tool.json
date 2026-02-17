@@ -1,0 +1,122 @@
+{
+ "actions": [],
+ "autoname": "RTOOL-.#####",
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "registry",
+  "tool_section",
+  "tool_name",
+  "tool_class",
+  "column_break_tool",
+  "access_default",
+  "requires_config",
+  "description_section",
+  "description",
+  "instructions",
+  "schema_section",
+  "handler_path",
+  "parameters_schema"
+ ],
+ "fields": [
+  {
+   "fieldname": "registry",
+   "fieldtype": "Link",
+   "label": "Registry",
+   "options": "Registry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tool_section",
+   "fieldtype": "Section Break",
+   "label": "Tool"
+  },
+  {
+   "fieldname": "tool_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tool Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "system",
+   "fieldname": "tool_class",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tool Class",
+   "options": "system\ncustom\nexternal"
+  },
+  {
+   "fieldname": "column_break_tool",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "allow",
+   "fieldname": "access_default",
+   "fieldtype": "Select",
+   "label": "Access Default",
+   "options": "allow\napproval_required\ndeny"
+  },
+  {
+   "fieldname": "requires_config",
+   "fieldtype": "Small Text",
+   "label": "Requires Config"
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Long Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "instructions",
+   "fieldtype": "Long Text",
+   "label": "Instructions"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "schema_section",
+   "fieldtype": "Section Break",
+   "label": "Schema"
+  },
+  {
+   "fieldname": "handler_path",
+   "fieldtype": "Data",
+   "label": "Handler Path"
+  },
+  {
+   "fieldname": "parameters_schema",
+   "fieldtype": "JSON",
+   "label": "Parameters Schema"
+  }
+ ],
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Tool",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Guest"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

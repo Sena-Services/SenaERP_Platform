@@ -1,0 +1,48 @@
+{
+ "actions": [],
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "skill",
+  "activation",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "skill",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Skill",
+   "options": "Registry Skill",
+   "reqd": 1
+  },
+  {
+   "default": "core",
+   "fieldname": "activation",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Activation",
+   "options": "core\non-demand",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Agent Skill",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

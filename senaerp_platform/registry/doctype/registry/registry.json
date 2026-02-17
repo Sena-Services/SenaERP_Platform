@@ -1,0 +1,218 @@
+{
+ "actions": [],
+ "autoname": "REG-.#####",
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "item_type",
+  "title",
+  "slug",
+  "description",
+  "column_break_det",
+  "category",
+  "dotmatrix_avatar",
+  "tags",
+  "catalog_section",
+  "trust_status",
+  "featured",
+  "visibility",
+  "column_break_cat",
+  "ref_name",
+  "install_count",
+  "metadata_section",
+  "author",
+  "version",
+  "column_break_meta",
+  "source_url",
+  "readme_section",
+  "readme",
+  "search_index_section",
+  "_search_text",
+  "_embedding"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "item_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Item Type",
+   "options": "Cluster\nTeam\nAgent\nTool\nSkill\nUI\nLogic\nAgent Role\nTeam Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "slug",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Slug",
+   "unique": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_global_search": 1,
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_det",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "\nGeneral\nManufacturing\nTravel\nFinance\nSales\nSupport\nHR\nOperations\nSystem"
+  },
+  {
+   "fieldname": "dotmatrix_avatar",
+   "fieldtype": "Data",
+   "label": "Dotmatrix Avatar"
+  },
+  {
+   "fieldname": "tags",
+   "fieldtype": "Table",
+   "label": "Tags",
+   "options": "Registry Tag"
+  },
+  {
+   "fieldname": "catalog_section",
+   "fieldtype": "Section Break",
+   "label": "Catalog"
+  },
+  {
+   "default": "unreviewed",
+   "fieldname": "trust_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Trust Status",
+   "options": "unreviewed\napproved\nblocked"
+  },
+  {
+   "default": "0",
+   "fieldname": "featured",
+   "fieldtype": "Check",
+   "label": "Featured"
+  },
+  {
+   "default": "public",
+   "fieldname": "visibility",
+   "fieldtype": "Select",
+   "label": "Visibility",
+   "options": "public\nprivate\nunlisted"
+  },
+  {
+   "fieldname": "column_break_cat",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ref_name",
+   "fieldtype": "Data",
+   "label": "Ref Name",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "install_count",
+   "fieldtype": "Int",
+   "label": "Install Count",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Metadata"
+  },
+  {
+   "fieldname": "author",
+   "fieldtype": "Data",
+   "label": "Author"
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Data",
+   "label": "Version"
+  },
+  {
+   "fieldname": "column_break_meta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "source_url",
+   "fieldtype": "Data",
+   "label": "Source URL"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "readme_section",
+   "fieldtype": "Section Break",
+   "label": "Readme"
+  },
+  {
+   "fieldname": "readme",
+   "fieldtype": "Text Editor",
+   "label": "Readme"
+  },
+  {
+   "fieldname": "search_index_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Search Index"
+  },
+  {
+   "fieldname": "_search_text",
+   "fieldtype": "Long Text",
+   "hidden": 1,
+   "label": "Search Text"
+  },
+  {
+   "fieldname": "_embedding",
+   "fieldtype": "Long Text",
+   "hidden": 1,
+   "label": "Embedding"
+  }
+ ],
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Guest"
+  }
+ ],
+ "show_name_in_global_search": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title"
+}

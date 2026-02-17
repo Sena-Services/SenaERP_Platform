@@ -1,0 +1,168 @@
+{
+ "actions": [],
+ "autoname": "RA-.#####",
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "registry",
+  "identity_section",
+  "agent_role",
+  "is_system",
+  "model_section",
+  "model",
+  "selectable_models",
+  "failover_chain",
+  "column_break_model",
+  "temperature",
+  "max_turns",
+  "thinking_mode",
+  "thinking_budget",
+  "attachments_section",
+  "ui",
+  "column_break_att",
+  "logic",
+  "tools_skills_section",
+  "agent_tools",
+  "agent_skills"
+ ],
+ "fields": [
+  {
+   "fieldname": "registry",
+   "fieldtype": "Link",
+   "label": "Registry",
+   "options": "Registry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "identity_section",
+   "fieldtype": "Section Break",
+   "label": "Identity"
+  },
+  {
+   "fieldname": "agent_role",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Agent Role",
+   "options": "Registry Agent Role",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_system",
+   "fieldtype": "Check",
+   "label": "Is System"
+  },
+  {
+   "fieldname": "model_section",
+   "fieldtype": "Section Break",
+   "label": "Model"
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Model",
+   "reqd": 1
+  },
+  {
+   "fieldname": "selectable_models",
+   "fieldtype": "Small Text",
+   "label": "Selectable Models"
+  },
+  {
+   "fieldname": "failover_chain",
+   "fieldtype": "Small Text",
+   "label": "Failover Chain"
+  },
+  {
+   "fieldname": "column_break_model",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature"
+  },
+  {
+   "default": "25",
+   "fieldname": "max_turns",
+   "fieldtype": "Int",
+   "label": "Max Turns"
+  },
+  {
+   "default": "dynamic",
+   "fieldname": "thinking_mode",
+   "fieldtype": "Select",
+   "label": "Thinking Mode",
+   "options": "dynamic\ncustom\ndisabled"
+  },
+  {
+   "default": "-1",
+   "fieldname": "thinking_budget",
+   "fieldtype": "Int",
+   "label": "Thinking Budget"
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "ui",
+   "fieldtype": "Link",
+   "label": "UI",
+   "options": "Registry UI"
+  },
+  {
+   "fieldname": "column_break_att",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "logic",
+   "fieldtype": "Link",
+   "label": "Logic",
+   "options": "Registry Logic"
+  },
+  {
+   "fieldname": "tools_skills_section",
+   "fieldtype": "Section Break",
+   "label": "Tools & Skills"
+  },
+  {
+   "fieldname": "agent_tools",
+   "fieldtype": "Table",
+   "label": "Agent Tools",
+   "options": "Registry Agent Tool"
+  },
+  {
+   "fieldname": "agent_skills",
+   "fieldtype": "Table",
+   "label": "Agent Skills",
+   "options": "Registry Agent Skill"
+  }
+ ],
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Agent",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Guest"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

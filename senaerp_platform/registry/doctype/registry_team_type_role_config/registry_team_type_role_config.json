@@ -1,0 +1,382 @@
+{
+ "actions": [],
+ "creation": "2026-02-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "role",
+  "min_agents",
+  "max_agents",
+  "townhall_section",
+  "can_post_townhall",
+  "can_read_townhall",
+  "can_mention_individuals",
+  "can_mention_all",
+  "column_break_th",
+  "woken_by_direct_mention",
+  "woken_by_all_mention",
+  "woken_by_any_townhall",
+  "texting_section",
+  "can_send_text",
+  "can_receive_text",
+  "column_break_tx",
+  "woken_by_text",
+  "spawning_section",
+  "can_spawn",
+  "can_kill_spawns",
+  "column_break_sp",
+  "spawnable",
+  "injection_section",
+  "can_inject",
+  "column_break_inj",
+  "injectable",
+  "inline_section",
+  "can_inline",
+  "column_break_inl",
+  "inlineable",
+  "tasks_section",
+  "can_create_tasks",
+  "can_read_tasks",
+  "column_break_tsk",
+  "can_update_tasks",
+  "can_cancel_tasks",
+  "doctype_access_section",
+  "can_read_documents",
+  "can_create_documents",
+  "can_update_documents",
+  "can_delete_documents",
+  "column_break_doc",
+  "can_mass_update",
+  "can_mass_delete",
+  "can_run_doc_method",
+  "other_section",
+  "single_user_instance",
+  "visible_in_agent_list",
+  "column_break_oth",
+  "ui_mode"
+ ],
+ "fields": [
+  {
+   "fieldname": "role",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Role",
+   "options": "Registry Agent Role",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "min_agents",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Min Agents"
+  },
+  {
+   "default": "1",
+   "fieldname": "max_agents",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Max Agents"
+  },
+  {
+   "fieldname": "townhall_section",
+   "fieldtype": "Section Break",
+   "label": "Townhall"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_post_townhall",
+   "fieldtype": "Select",
+   "label": "Can Post Townhall",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_read_townhall",
+   "fieldtype": "Select",
+   "label": "Can Read Townhall",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_mention_individuals",
+   "fieldtype": "Select",
+   "label": "Can Mention Individuals",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_mention_all",
+   "fieldtype": "Select",
+   "label": "Can Mention All",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_th",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "woken_by_direct_mention",
+   "fieldtype": "Select",
+   "label": "Woken by Direct Mention",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "woken_by_all_mention",
+   "fieldtype": "Select",
+   "label": "Woken by All Mention",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "woken_by_any_townhall",
+   "fieldtype": "Select",
+   "label": "Woken by Any Townhall",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "texting_section",
+   "fieldtype": "Section Break",
+   "label": "Texting"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_send_text",
+   "fieldtype": "Select",
+   "label": "Can Send Text",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_receive_text",
+   "fieldtype": "Select",
+   "label": "Can Receive Text",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_tx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "woken_by_text",
+   "fieldtype": "Select",
+   "label": "Woken by Text",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "spawning_section",
+   "fieldtype": "Section Break",
+   "label": "Spawning"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_spawn",
+   "fieldtype": "Select",
+   "label": "Can Spawn",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_kill_spawns",
+   "fieldtype": "Select",
+   "label": "Can Kill Spawns",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_sp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "spawnable",
+   "fieldtype": "Select",
+   "label": "Spawnable",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "injection_section",
+   "fieldtype": "Section Break",
+   "label": "Injection"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_inject",
+   "fieldtype": "Select",
+   "label": "Can Inject",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_inj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "injectable",
+   "fieldtype": "Select",
+   "label": "Injectable",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "inline_section",
+   "fieldtype": "Section Break",
+   "label": "Inline"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_inline",
+   "fieldtype": "Select",
+   "label": "Can Inline",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_inl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "inlineable",
+   "fieldtype": "Select",
+   "label": "Inlineable",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "tasks_section",
+   "fieldtype": "Section Break",
+   "label": "Tasks"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_create_tasks",
+   "fieldtype": "Select",
+   "label": "Can Create Tasks",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_read_tasks",
+   "fieldtype": "Select",
+   "label": "Can Read Tasks",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_tsk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_update_tasks",
+   "fieldtype": "Select",
+   "label": "Can Update Tasks",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_cancel_tasks",
+   "fieldtype": "Select",
+   "label": "Can Cancel Tasks",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "doctype_access_section",
+   "fieldtype": "Section Break",
+   "label": "DocType Access"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_read_documents",
+   "fieldtype": "Select",
+   "label": "Can Read Documents",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_create_documents",
+   "fieldtype": "Select",
+   "label": "Can Create Documents",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_update_documents",
+   "fieldtype": "Select",
+   "label": "Can Update Documents",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_delete_documents",
+   "fieldtype": "Select",
+   "label": "Can Delete Documents",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_doc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_mass_update",
+   "fieldtype": "Select",
+   "label": "Can Mass Update",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_mass_delete",
+   "fieldtype": "Select",
+   "label": "Can Mass Delete",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "deny",
+   "fieldname": "can_run_doc_method",
+   "fieldtype": "Select",
+   "label": "Can Run Doc Method",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "other_section",
+   "fieldtype": "Section Break",
+   "label": "Other"
+  },
+  {
+   "default": "deny",
+   "fieldname": "single_user_instance",
+   "fieldtype": "Select",
+   "label": "Single User Instance",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "default": "allow",
+   "fieldname": "visible_in_agent_list",
+   "fieldtype": "Select",
+   "label": "Visible in Agent List",
+   "options": "deny\nallow\napproval_required"
+  },
+  {
+   "fieldname": "column_break_oth",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "chat",
+   "fieldname": "ui_mode",
+   "fieldtype": "Select",
+   "label": "UI Mode",
+   "options": "none\nchat\nsplit"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-02-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Team Type Role Config",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
