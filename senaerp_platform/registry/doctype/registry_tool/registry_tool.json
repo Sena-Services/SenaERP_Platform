@@ -17,6 +17,7 @@
   "instructions",
   "schema_section",
   "handler_path",
+  "handler_source",
   "parameters_schema"
  ],
  "fields": [
@@ -89,6 +90,13 @@
    "fieldname": "handler_path",
    "fieldtype": "Data",
    "label": "Handler Path"
+  },
+  {
+   "description": "Full Python source for standalone tools. Must call register_tool() at module level.",
+   "fieldname": "handler_source",
+   "fieldtype": "Code",
+   "label": "Handler Source",
+   "options": "Python"
   },
   {
    "fieldname": "parameters_schema",

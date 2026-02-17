@@ -12,7 +12,8 @@
   "source_section",
   "source_path",
   "source_url",
-  "source_ref"
+  "source_ref",
+  "html_content"
  ],
  "fields": [
   {
@@ -61,6 +62,13 @@
    "fieldname": "source_ref",
    "fieldtype": "Data",
    "label": "Source Ref"
+  },
+  {
+   "description": "Full HTML for standalone UIs. Single-file bundle with inline JS/CSS. Written to www/ on install.",
+   "fieldname": "html_content",
+   "fieldtype": "Code",
+   "label": "Built HTML",
+   "options": "HTML"
   }
  ],
  "links": [],
