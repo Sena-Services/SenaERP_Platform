@@ -22,7 +22,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Skill Type",
-   "options": "identity\ninstructions\noperating_workflow\ndomain",
+   "options": "identity\ninstructions\noperating_workflow\ndomain\ntool_guide",
    "reqd": 1
   },
   {
@@ -32,7 +32,7 @@
   }
  ],
  "links": [],
- "modified": "2026-02-16 00:00:00.000000",
+ "modified": "2026-02-17 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Registry",
  "name": "Registry Skill",

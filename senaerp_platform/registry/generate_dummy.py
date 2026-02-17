@@ -4,7 +4,11 @@ Creates a sample company deployment with ~120 registry items where clusters
 contain teams, teams contain agents, and agents reference tools, skills,
 UIs, logic packs, and roles — all traversable in the registry UI.
 """
+from __future__ import annotations
+
 import frappe
+
+from senaerp_platform.registry.seed import ALL_FLAG_NAMES
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -480,35 +484,39 @@ _AGENT_EXT = {
 	},
 }
 
-# ── Permission profiles for role configs ─────────────────────────────────────
-_PERM = {
-	"orchestrator": {
+# ── Flag profiles for custom roles (seeded roles get flags from seed.py) ──────
+_ROLE_FLAGS = {
+	"Analyst": {
 		"can_post_townhall": "allow", "can_read_townhall": "allow",
-		"can_mention_individuals": "allow", "can_mention_all": "allow",
+		"can_mention_individuals": "allow", "can_mention_all": "deny",
 		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
-		"woken_by_any_townhall": "allow",
+		"woken_by_any_townhall": "deny",
 		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "allow", "can_kill_spawns": "allow", "spawnable": "deny",
-		"can_inject": "allow", "injectable": "deny",
-		"can_inline": "allow", "inlineable": "deny",
+		"spawn_preset": "deny", "inline_preset": "deny",
+		"can_create_standard": "deny", "can_create_ephemeral": "deny",
+		"can_kill_instance": "deny", "spawnable": "deny",
+		"can_inject": "deny", "injectable": "allow",
+		"inject_scope": "parent_only", "inject_target_roles": "",
 		"can_create_tasks": "allow", "can_read_tasks": "allow",
-		"can_update_tasks": "allow", "can_cancel_tasks": "allow",
-		"can_read_documents": "allow", "can_create_documents": "allow",
-		"can_update_documents": "allow", "can_delete_documents": "approval_required",
-		"can_mass_update": "approval_required", "can_mass_delete": "deny",
+		"can_update_tasks": "allow", "can_cancel_tasks": "deny",
+		"can_read_documents": "allow", "can_create_documents": "deny",
+		"can_update_documents": "deny", "can_delete_documents": "deny",
+		"can_mass_update": "deny", "can_mass_delete": "deny",
 		"can_run_doc_method": "allow",
 		"single_user_instance": "deny",
 		"visible_in_agent_list": "allow", "ui_mode": "chat",
 	},
-	"worker": {
+	"Executor": {
 		"can_post_townhall": "deny", "can_read_townhall": "allow",
 		"can_mention_individuals": "deny", "can_mention_all": "deny",
 		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
 		"woken_by_any_townhall": "deny",
 		"can_send_text": "deny", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "deny", "can_kill_spawns": "deny", "spawnable": "allow",
+		"spawn_preset": "deny", "inline_preset": "deny",
+		"can_create_standard": "deny", "can_create_ephemeral": "deny",
+		"can_kill_instance": "deny", "spawnable": "allow",
 		"can_inject": "deny", "injectable": "allow",
-		"can_inline": "deny", "inlineable": "allow",
+		"inject_scope": "parent_only", "inject_target_roles": "",
 		"can_create_tasks": "deny", "can_read_tasks": "allow",
 		"can_update_tasks": "allow", "can_cancel_tasks": "deny",
 		"can_read_documents": "allow", "can_create_documents": "allow",
@@ -518,51 +526,17 @@ _PERM = {
 		"single_user_instance": "deny",
 		"visible_in_agent_list": "allow", "ui_mode": "chat",
 	},
-	"specialist": {
-		"can_post_townhall": "allow", "can_read_townhall": "allow",
-		"can_mention_individuals": "allow", "can_mention_all": "deny",
-		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
-		"woken_by_any_townhall": "deny",
-		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "deny", "can_kill_spawns": "deny", "spawnable": "allow",
-		"can_inject": "deny", "injectable": "allow",
-		"can_inline": "allow", "inlineable": "allow",
-		"can_create_tasks": "allow", "can_read_tasks": "allow",
-		"can_update_tasks": "allow", "can_cancel_tasks": "deny",
-		"can_read_documents": "allow", "can_create_documents": "allow",
-		"can_update_documents": "allow", "can_delete_documents": "deny",
-		"can_mass_update": "deny", "can_mass_delete": "deny",
-		"can_run_doc_method": "allow",
-		"single_user_instance": "deny",
-		"visible_in_agent_list": "allow", "ui_mode": "chat",
-	},
-	"supervisor": {
-		"can_post_townhall": "allow", "can_read_townhall": "allow",
-		"can_mention_individuals": "allow", "can_mention_all": "allow",
-		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
-		"woken_by_any_townhall": "allow",
-		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "allow", "can_kill_spawns": "allow", "spawnable": "deny",
-		"can_inject": "allow", "injectable": "deny",
-		"can_inline": "allow", "inlineable": "deny",
-		"can_create_tasks": "allow", "can_read_tasks": "allow",
-		"can_update_tasks": "allow", "can_cancel_tasks": "allow",
-		"can_read_documents": "allow", "can_create_documents": "allow",
-		"can_update_documents": "allow", "can_delete_documents": "allow",
-		"can_mass_update": "approval_required", "can_mass_delete": "approval_required",
-		"can_run_doc_method": "allow",
-		"single_user_instance": "deny",
-		"visible_in_agent_list": "allow", "ui_mode": "chat",
-	},
-	"reviewer": {
+	"Reviewer": {
 		"can_post_townhall": "allow", "can_read_townhall": "allow",
 		"can_mention_individuals": "allow", "can_mention_all": "deny",
 		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
 		"woken_by_any_townhall": "allow",
 		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "deny", "can_kill_spawns": "deny", "spawnable": "deny",
+		"spawn_preset": "deny", "inline_preset": "deny",
+		"can_create_standard": "deny", "can_create_ephemeral": "deny",
+		"can_kill_instance": "deny", "spawnable": "deny",
 		"can_inject": "deny", "injectable": "deny",
-		"can_inline": "deny", "inlineable": "deny",
+		"inject_scope": "spawns_only", "inject_target_roles": "",
 		"can_create_tasks": "allow", "can_read_tasks": "allow",
 		"can_update_tasks": "allow", "can_cancel_tasks": "deny",
 		"can_read_documents": "allow", "can_create_documents": "deny",
@@ -572,20 +546,62 @@ _PERM = {
 		"single_user_instance": "deny",
 		"visible_in_agent_list": "allow", "ui_mode": "chat",
 	},
-	"autonomous": {
+	"Dispatcher": {
 		"can_post_townhall": "allow", "can_read_townhall": "allow",
 		"can_mention_individuals": "allow", "can_mention_all": "allow",
 		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
 		"woken_by_any_townhall": "allow",
 		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
-		"can_spawn": "allow", "can_kill_spawns": "allow", "spawnable": "allow",
-		"can_inject": "allow", "injectable": "allow",
-		"can_inline": "allow", "inlineable": "allow",
+		"spawn_preset": "allow", "inline_preset": "deny",
+		"can_create_standard": "allow", "can_create_ephemeral": "deny",
+		"can_kill_instance": "allow", "spawnable": "deny",
+		"can_inject": "allow", "injectable": "deny",
+		"inject_scope": "spawns_only", "inject_target_roles": "",
+		"can_create_tasks": "allow", "can_read_tasks": "allow",
+		"can_update_tasks": "allow", "can_cancel_tasks": "allow",
+		"can_read_documents": "allow", "can_create_documents": "allow",
+		"can_update_documents": "allow", "can_delete_documents": "approval_required",
+		"can_mass_update": "approval_required", "can_mass_delete": "deny",
+		"can_run_doc_method": "allow",
+		"single_user_instance": "deny",
+		"visible_in_agent_list": "allow", "ui_mode": "chat",
+	},
+	"Supervisor": {
+		"can_post_townhall": "allow", "can_read_townhall": "allow",
+		"can_mention_individuals": "allow", "can_mention_all": "allow",
+		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
+		"woken_by_any_townhall": "allow",
+		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
+		"spawn_preset": "allow", "inline_preset": "deny",
+		"can_create_standard": "allow", "can_create_ephemeral": "deny",
+		"can_kill_instance": "allow", "spawnable": "deny",
+		"can_inject": "allow", "injectable": "deny",
+		"inject_scope": "same_team", "inject_target_roles": "",
 		"can_create_tasks": "allow", "can_read_tasks": "allow",
 		"can_update_tasks": "allow", "can_cancel_tasks": "allow",
 		"can_read_documents": "allow", "can_create_documents": "allow",
 		"can_update_documents": "allow", "can_delete_documents": "allow",
-		"can_mass_update": "allow", "can_mass_delete": "approval_required",
+		"can_mass_update": "approval_required", "can_mass_delete": "approval_required",
+		"can_run_doc_method": "allow",
+		"single_user_instance": "deny",
+		"visible_in_agent_list": "allow", "ui_mode": "chat",
+	},
+	"Specialist": {
+		"can_post_townhall": "allow", "can_read_townhall": "allow",
+		"can_mention_individuals": "allow", "can_mention_all": "deny",
+		"woken_by_direct_mention": "allow", "woken_by_all_mention": "allow",
+		"woken_by_any_townhall": "deny",
+		"can_send_text": "allow", "can_receive_text": "allow", "woken_by_text": "allow",
+		"spawn_preset": "deny", "inline_preset": "allow",
+		"can_create_standard": "deny", "can_create_ephemeral": "allow",
+		"can_kill_instance": "deny", "spawnable": "allow",
+		"can_inject": "deny", "injectable": "allow",
+		"inject_scope": "parent_only", "inject_target_roles": "",
+		"can_create_tasks": "allow", "can_read_tasks": "allow",
+		"can_update_tasks": "allow", "can_cancel_tasks": "deny",
+		"can_read_documents": "allow", "can_create_documents": "allow",
+		"can_update_documents": "allow", "can_delete_documents": "deny",
+		"can_mass_update": "deny", "can_mass_delete": "deny",
 		"can_run_doc_method": "allow",
 		"single_user_instance": "deny",
 		"visible_in_agent_list": "allow", "ui_mode": "chat",
@@ -597,52 +613,52 @@ _TEAM_TYPE_EXT = {
 	"Standard": {
 		"overridable": 0,
 		"roles": [
-			{"role": "Orchestrator", "min": 1, "max": 1, "perms": "orchestrator"},
-			{"role": "Communicator", "min": 0, "max": 2, "perms": "specialist"},
-			{"role": "Worker", "min": 1, "max": 8, "perms": "worker"},
-			{"role": "Default", "min": 0, "max": 5, "perms": "worker"},
+			{"role": "Orchestrator", "min": 1, "max": 1},
+			{"role": "Communicator", "min": 0, "max": 2},
+			{"role": "Worker", "min": 1, "max": 8},
+			{"role": "Default", "min": 0, "max": 5},
 		],
 	},
 	"Default": {
 		"overridable": 1,
 		"roles": [
-			{"role": "Default", "min": 1, "max": 10, "perms": "autonomous"},
+			{"role": "Default", "min": 1, "max": 10},
 		],
 	},
 	"Hub and Spoke": {
 		"overridable": 0,
 		"roles": [
-			{"role": "Orchestrator", "min": 1, "max": 1, "perms": "orchestrator"},
-			{"role": "Worker", "min": 1, "max": 8, "perms": "worker"},
+			{"role": "Orchestrator", "min": 1, "max": 1},
+			{"role": "Worker", "min": 1, "max": 8},
 		],
 	},
 	"Assembly Line": {
 		"overridable": 0,
 		"roles": [
-			{"role": "Orchestrator", "min": 1, "max": 1, "perms": "orchestrator"},
-			{"role": "Executor", "min": 2, "max": 10, "perms": "worker"},
+			{"role": "Orchestrator", "min": 1, "max": 1},
+			{"role": "Executor", "min": 2, "max": 10},
 		],
 	},
 	"Escalation Ladder": {
 		"overridable": 0,
 		"roles": [
-			{"role": "Dispatcher", "min": 1, "max": 1, "perms": "orchestrator"},
-			{"role": "Executor", "min": 1, "max": 5, "perms": "worker"},
-			{"role": "Specialist", "min": 1, "max": 3, "perms": "specialist"},
-			{"role": "Supervisor", "min": 1, "max": 1, "perms": "supervisor"},
+			{"role": "Dispatcher", "min": 1, "max": 1},
+			{"role": "Executor", "min": 1, "max": 5},
+			{"role": "Specialist", "min": 1, "max": 3},
+			{"role": "Supervisor", "min": 1, "max": 1},
 		],
 	},
 	"Review Board": {
 		"overridable": 0,
 		"roles": [
-			{"role": "Orchestrator", "min": 1, "max": 1, "perms": "orchestrator"},
-			{"role": "Reviewer", "min": 2, "max": 5, "perms": "reviewer"},
+			{"role": "Orchestrator", "min": 1, "max": 1},
+			{"role": "Reviewer", "min": 2, "max": 5},
 		],
 	},
 	"Autonomous Squad": {
 		"overridable": 1,
 		"roles": [
-			{"role": "Default", "min": 2, "max": 10, "perms": "autonomous"},
+			{"role": "Default", "min": 2, "max": 10},
 		],
 	},
 }
@@ -797,6 +813,18 @@ def _wire_logic(ref_map):
 		}, update_modified=False)
 
 
+def _wire_roles(ref_map):
+	"""Set capability flags on custom role extensions (seeded roles handled by seed.py)."""
+	for title, flags in _ROLE_FLAGS.items():
+		ext_name = ref_map.get(("Agent Role", title))
+		if not ext_name:
+			continue
+		doc = frappe.get_doc("Registry Agent Role", ext_name)
+		for flag in ALL_FLAG_NAMES:
+			setattr(doc, flag, flags.get(flag, "deny"))
+		doc.save(ignore_permissions=True)
+
+
 def _wire_agents(ref_map):
 	for title, cfg in _AGENT_EXT.items():
 		ext_name = ref_map.get(("Agent", title))
@@ -854,13 +882,11 @@ def _wire_team_types(ref_map):
 			role_ext = ref_map.get(("Agent Role", role_cfg["role"]))
 			if not role_ext:
 				continue
-			row = {
+			doc.append("role_configs", {
 				"role": role_ext,
 				"min_agents": role_cfg.get("min", 1),
 				"max_agents": role_cfg.get("max", 1),
-			}
-			row.update(_PERM.get(role_cfg.get("perms", "worker"), {}))
-			doc.append("role_configs", row)
+			})
 
 		doc.save(ignore_permissions=True)
 
@@ -943,6 +969,9 @@ def generate_dummy_data(clean=False):
 
 	# ── Phase 2: Wire extensions with links and child tables ──
 	ref_map = _build_ref_map()
+
+	_wire_roles(ref_map)
+	print("  Custom roles wired (capability flags)")
 
 	_wire_tools(ref_map)
 	_wire_skills(ref_map)

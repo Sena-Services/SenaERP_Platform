@@ -323,3 +323,155 @@ def _resolve_to_registry(ext_doctype, ext_name):
 		"Registry", registry_name,
 		["slug", "title", "item_type"], as_dict=True,
 	)
+
+
+# ---------------------------------------------------------------------------
+# Install package
+# ---------------------------------------------------------------------------
+
+INSTALL_ORDER = {
+	"Agent Role": 1, "Skill": 2, "Tool": 3, "UI": 4, "Logic": 5,
+	"Team Type": 6, "Agent": 7, "Team": 8, "Cluster": 9,
+}
+
+
+@frappe.whitelist(allow_guest=True)
+def get_install_package(slug: str | None = None):
+	"""Return all dependencies for a registry item as a flat install-ordered list.
+
+	Each item includes full extension data. Link references between items
+	use slugs (not internal names like RA-00005).
+	"""
+	if not slug:
+		frappe.throw("slug is required", frappe.MandatoryError)
+
+	reg = frappe.db.get_value(
+		"Registry", {"slug": slug},
+		["name", "trust_status"],
+		as_dict=True,
+	)
+	if not reg:
+		frappe.throw(f"Registry item '{slug}' not found", frappe.DoesNotExistError)
+	if reg.trust_status != "approved":
+		frappe.throw(f"Registry item '{slug}' is not approved for installation")
+
+	visited: dict[str, bool] = {}
+	_collect_deps(reg.name, visited)
+
+	items = []
+	for reg_name in visited:
+		item = _build_package_item(reg_name)
+		if item:
+			items.append(item)
+
+	items.sort(key=lambda x: INSTALL_ORDER.get(x["item_type"], 99))
+	return {"items": items}
+
+
+def _collect_deps(registry_name: str, visited: dict[str, bool]) -> None:
+	"""Recursively collect all dependencies for a registry item."""
+	if registry_name in visited:
+		return
+	visited[registry_name] = True
+
+	reg = frappe.db.get_value(
+		"Registry", registry_name,
+		["item_type", "ref_name"], as_dict=True,
+	)
+	if not reg or not reg.ref_name:
+		return
+
+	ext_doctype = EXTENSION_MAP.get(reg.item_type)
+	if not ext_doctype:
+		return
+
+	ext = frappe.get_doc(ext_doctype, reg.ref_name)
+
+	# Direct link fields → other extensions
+	for field, target_dt in _EXT_LINK_FIELDS.get(ext_doctype, {}).items():
+		ext_ref = ext.get(field)
+		if ext_ref:
+			dep_reg = frappe.db.get_value(target_dt, ext_ref, "registry")
+			if dep_reg:
+				_collect_deps(dep_reg, visited)
+
+	# Child table link fields → other extensions
+	for child_field in EXTENSION_CHILDREN.get(ext_doctype, []):
+		child_dt = _CHILD_TABLE_DOCTYPES.get(child_field)
+		if not child_dt:
+			continue
+		for row in ext.get(child_field) or []:
+			for link_field, target_dt in _CHILD_LINK_FIELDS.get(child_dt, {}).items():
+				ext_ref = row.get(link_field)
+				if ext_ref:
+					dep_reg = frappe.db.get_value(target_dt, ext_ref, "registry")
+					if dep_reg:
+						_collect_deps(dep_reg, visited)
+
+
+def _build_package_item(registry_name: str) -> dict | None:
+	"""Build a single item dict for the install package."""
+	reg = frappe.db.get_value(
+		"Registry", registry_name,
+		["slug", "title", "item_type", "description", "ref_name"],
+		as_dict=True,
+	)
+	if not reg:
+		return None
+
+	item = {
+		"item_type": reg.item_type,
+		"title": reg.title,
+		"slug": reg.slug,
+		"description": reg.description,
+	}
+
+	ext_doctype = EXTENSION_MAP.get(reg.item_type)
+	if not ext_doctype or not reg.ref_name:
+		return item
+
+	ext = frappe.get_doc(ext_doctype, reg.ref_name)
+	data = ext.as_dict()
+
+	# Strip Frappe meta fields
+	for key in ("doctype", "name", "owner", "creation", "modified",
+				"modified_by", "docstatus", "idx", "registry"):
+		data.pop(key, None)
+
+	# Resolve direct link fields → slugs
+	for field, target_dt in _EXT_LINK_FIELDS.get(ext_doctype, {}).items():
+		if data.get(field):
+			data[field] = _ext_to_slug(target_dt, data[field]) or data[field]
+
+	# Clean child rows and resolve link fields → slugs
+	for child_field in EXTENSION_CHILDREN.get(ext_doctype, []):
+		if child_field not in data or not isinstance(data[child_field], list):
+			continue
+		child_dt = _CHILD_TABLE_DOCTYPES.get(child_field)
+		cleaned = []
+		for row in data[child_field]:
+			if not isinstance(row, dict):
+				row = row.as_dict()
+			else:
+				row = dict(row)
+			for key in ("doctype", "name", "owner", "creation", "modified",
+						"modified_by", "docstatus", "parent", "parentfield",
+						"parenttype", "idx"):
+				row.pop(key, None)
+			if child_dt:
+				for link_field, target_dt in _CHILD_LINK_FIELDS.get(child_dt, {}).items():
+					if row.get(link_field):
+						row[link_field] = _ext_to_slug(target_dt, row[link_field]) or row[link_field]
+			cleaned.append(row)
+		data[child_field] = cleaned
+
+	item["extension"] = data
+	return item
+
+
+def _ext_to_slug(ext_doctype: str, ext_name: str) -> str | None:
+	"""Resolve an extension doc name (e.g. RA-00005) to its Registry slug."""
+	reg_name = frappe.db.get_value(ext_doctype, ext_name, "registry")
+	if not reg_name:
+		return None
+	return frappe.db.get_value("Registry", reg_name, "slug")
