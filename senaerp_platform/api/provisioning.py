@@ -51,7 +51,7 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 		script_path = "/home/SenaERP/Application/bench/onboard-customer.sh"
 
 		result = subprocess.run(
-			[script_path, subdomain],
+			[script_path, subdomain, company_name or subdomain],
 			capture_output=True,
 			text=True,
 			timeout=300,  # 5 minute timeout
