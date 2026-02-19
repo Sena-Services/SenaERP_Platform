@@ -11,7 +11,7 @@ from frappe.utils import now
 @frappe.whitelist()
 def provision_customer_site(subdomain, email=None, company_name=None):
 	"""
-	Provision a new customer site by calling the onboard-customer-v2.sh script
+	Provision a new customer site by calling the onboard-customer.sh script
 
 	Args:
 		subdomain (str): The subdomain for the new site (e.g., 'acme' for acme.senaerp.com)
@@ -38,7 +38,7 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 
 	# Check if site already exists
 	site_name = f"{subdomain}.senaerp.com"
-	site_path = f"/home/SenaERP/bench/sites/{site_name}"
+	site_path = f"/home/SenaERP/Application/bench/sites/{site_name}"
 
 	import os
 	if os.path.exists(site_path):
@@ -48,14 +48,14 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 
 	try:
 		# Execute onboarding script directly (Frappe already runs as sentra user)
-		script_path = "/home/SenaERP/bench/onboard-customer-v2.sh"
+		script_path = "/home/SenaERP/Application/bench/onboard-customer.sh"
 
 		result = subprocess.run(
 			[script_path, subdomain],
 			capture_output=True,
 			text=True,
 			timeout=300,  # 5 minute timeout
-			cwd="/home/SenaERP/bench"
+			cwd="/home/SenaERP/Application/bench"
 		)
 
 		if result.returncode != 0:
