@@ -76,17 +76,29 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 
 		site_url = f"https://{site_name}"
 
-		# Create Provisioned Site record
-		provisioned_site = frappe.get_doc({
-			"doctype": "Provisioned Site",
-			"company_name": company_name or subdomain,
-			"email": email or "admin@example.com",
-			"site_url": site_url,
-			"administrator_password": admin_password,
-			"status": "Active",
-			"provisioned_on": now()
-		})
-		provisioned_site.insert(ignore_permissions=True)
+		# Create or update Provisioned Site record
+		doc_name = company_name or subdomain
+		if frappe.db.exists("Provisioned Site", doc_name):
+			provisioned_site = frappe.get_doc("Provisioned Site", doc_name)
+			provisioned_site.update({
+				"email": email or "admin@example.com",
+				"site_url": site_url,
+				"administrator_password": admin_password,
+				"status": "Active",
+				"provisioned_on": now()
+			})
+			provisioned_site.save(ignore_permissions=True)
+		else:
+			provisioned_site = frappe.get_doc({
+				"doctype": "Provisioned Site",
+				"company_name": doc_name,
+				"email": email or "admin@example.com",
+				"site_url": site_url,
+				"administrator_password": admin_password,
+				"status": "Active",
+				"provisioned_on": now()
+			})
+			provisioned_site.insert(ignore_permissions=True)
 		frappe.db.commit()
 
 		frappe.logger().info(f"Provisioned Site record created: {provisioned_site.name}")
