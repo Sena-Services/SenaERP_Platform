@@ -148,6 +148,67 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 		frappe.throw(_(f"Provisioning failed: {str(e)}"))
 
 
+@frappe.whitelist()
+def deprovision_customer_site(site_name: str):
+	"""
+	Fully remove a tenant site by calling deprovision-site.sh on the Application bench.
+
+	Args:
+		site_name: The Provisioned Site document name (company_name)
+
+	Returns:
+		dict with success status
+	"""
+	if not site_name:
+		frappe.throw(_("Site name is required"))
+
+	if not frappe.db.exists("Provisioned Site", site_name):
+		frappe.throw(_(f"Provisioned Site '{site_name}' not found"))
+
+	doc = frappe.get_doc("Provisioned Site", site_name)
+	site_url = doc.site_url or ""
+
+	# Extract subdomain from site_url (https://xyz.senaerp.com -> xyz)
+	subdomain = site_url.replace("https://", "").replace("http://", "").replace(".senaerp.com", "").strip("/")
+	if not subdomain:
+		frappe.throw(_("Could not determine subdomain from site URL"))
+
+	frappe.logger().info(f"Starting deprovisioning for site: {subdomain}.senaerp.com")
+
+	try:
+		script_path = "/home/SenaERP/Application/bench/deprovision-site.sh"
+
+		result = subprocess.run(
+			[script_path, subdomain],
+			capture_output=True,
+			text=True,
+			timeout=120,
+			cwd="/home/SenaERP/Application/bench"
+		)
+
+		if result.returncode != 0:
+			error_msg = result.stderr or result.stdout
+			frappe.logger().error(f"Deprovisioning failed for {subdomain}: {error_msg}")
+			frappe.throw(_(f"Deprovisioning failed: {error_msg}"))
+
+		frappe.logger().info(f"Site {subdomain}.senaerp.com dropped successfully")
+
+		# Delete the Provisioned Site document
+		frappe.delete_doc("Provisioned Site", site_name, force=True)
+		frappe.db.commit()
+
+		return {"success": True, "site_name": f"{subdomain}.senaerp.com"}
+
+	except subprocess.TimeoutExpired:
+		frappe.logger().error(f"Deprovisioning timeout for {subdomain}")
+		frappe.throw(_("Deprovisioning timed out after 2 minutes."))
+	except frappe.ValidationError:
+		raise
+	except Exception as e:
+		frappe.logger().error(f"Deprovisioning exception for {subdomain}: {str(e)}")
+		frappe.throw(_(f"Deprovisioning failed: {str(e)}"))
+
+
 def _build_provisioning_email(company_name, site_url, admin_password):
 	return f"""
 <h2>Welcome to SenaERP!</h2>
