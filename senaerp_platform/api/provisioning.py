@@ -91,21 +91,19 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 
 		frappe.logger().info(f"Provisioned Site record created: {provisioned_site.name}")
 
-		# Send email if email is provided
+		# Send credentials email via Graph API (frappe.sendmail hook)
 		email_sent = False
 		email_error = None
 		if email and admin_password:
 			try:
-				from senaerp_platform.utils.email_sender import send_provisioning_email
-
-				email_response = send_provisioning_email(
-					email=email,
-					company_name=company_name or subdomain,
-					site_url=site_url,
-					admin_password=admin_password
+				display_name = company_name or subdomain
+				frappe.sendmail(
+					recipients=[email],
+					subject="Welcome to SenaERP - Your Site is Ready!",
+					message=_build_provisioning_email(display_name, site_url, admin_password),
+					now=True,
 				)
 
-				# Update Provisioned Site with email sent status
 				provisioned_site.email_sent = True
 				provisioned_site.email_sent_on = now()
 				provisioned_site.save(ignore_permissions=True)
@@ -117,7 +115,6 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 			except Exception as email_ex:
 				email_error = str(email_ex)
 				frappe.logger().error(f"Failed to send provisioning email: {email_error}")
-				# Don't fail the entire provisioning if email fails
 		else:
 			frappe.logger().warning(f"Email not sent - email: {email}, password: {'Yes' if admin_password else 'No'}")
 
@@ -137,3 +134,24 @@ def provision_customer_site(subdomain, email=None, company_name=None):
 	except Exception as e:
 		frappe.logger().error(f"Provisioning exception for {subdomain}: {str(e)}")
 		frappe.throw(_(f"Provisioning failed: {str(e)}"))
+
+
+def _build_provisioning_email(company_name, site_url, admin_password):
+	return f"""
+<h2>Welcome to SenaERP!</h2>
+<p>Hi {company_name},</p>
+<p>Your SenaERP site is ready. Here are your login credentials:</p>
+<table style="border-collapse:collapse;margin:20px 0">
+<tr><td style="padding:8px 16px;font-weight:600;color:#6b7280">Site URL</td>
+<td style="padding:8px 16px"><a href="{site_url}">{site_url}</a></td></tr>
+<tr><td style="padding:8px 16px;font-weight:600;color:#6b7280">Username</td>
+<td style="padding:8px 16px"><code>Administrator</code></td></tr>
+<tr><td style="padding:8px 16px;font-weight:600;color:#6b7280">Password</td>
+<td style="padding:8px 16px"><code>{admin_password}</code></td></tr>
+</table>
+<p><a href="{site_url}" style="display:inline-block;background:#667eea;color:white;
+padding:12px 28px;text-decoration:none;border-radius:6px;font-weight:600">
+Access Your Site</a></p>
+<p><strong>Please change your password after your first login.</strong></p>
+<p>Best regards,<br>The SenaERP Team</p>
+"""
