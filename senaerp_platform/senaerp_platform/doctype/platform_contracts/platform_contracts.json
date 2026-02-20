@@ -1,53 +1,67 @@
 {
  "actions": [],
- "creation": "2024-01-01 00:00:00.000000",
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "creation": "2025-01-01 00:00:00.000000",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "basic_section",
   "contract_name",
   "title",
   "status",
+  "column_break_basic",
   "builder_mode",
   "instance",
-  "column_break_basic",
+  "provisioned_site",
+  "naming_series",
+  "cost_section",
   "total_cost",
   "currency",
+  "column_break_cost",
   "items_total",
   "items_completed",
   "estimated_minutes",
-  "section_break_costs",
+  "cost_breakdown_section",
   "registry_subtotal",
   "builder_subtotal",
   "column_break_costs",
   "community_subtotal",
-  "section_break_dates",
+  "dates_section",
   "created_at",
   "approved_at",
   "column_break_dates",
   "build_started_at",
   "build_completed_at",
-  "section_break_approval",
+  "approval_section",
   "approved_by",
   "rejection_reason",
   "column_break_approval",
   "build_error",
-  "section_break_content",
+  "content_section",
   "notes_content",
   "brd_content",
-  "section_break_contract",
+  "contract_section",
   "contract_json",
   "terms",
-  "section_break_items",
+  "items_section",
   "items_json"
  ],
  "fields": [
   {
+   "fieldname": "basic_section",
+   "fieldtype": "Section Break",
+   "label": "Contract Details"
+  },
+  {
    "fieldname": "contract_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Contract Name",
+   "label": "Contract ID",
    "read_only": 1,
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1,
+   "description": "The Builder Contract document name from the source system"
   },
   {
    "fieldname": "title",
@@ -57,12 +71,17 @@
    "read_only": 1
   },
   {
+   "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
    "options": "Draft\nPending Approval\nApproved\nRejected\nBuilding\nCompleted\nCancelled",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "builder_mode",
@@ -75,13 +94,32 @@
    "fieldname": "instance",
    "fieldtype": "Data",
    "label": "Instance",
-   "read_only": 1
+   "read_only": 1,
+   "description": "Runtime Instance ID from the source system"
   },
   {
-   "fieldname": "column_break_basic",
-   "fieldtype": "Column Break"
+   "fieldname": "provisioned_site",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Provisioned Site",
+   "options": "Provisioned Site",
+   "description": "The provisioned site this contract belongs to"
   },
   {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "PC-.#####",
+   "default": "PC-.#####"
+  },
+  {
+   "fieldname": "cost_section",
+   "fieldtype": "Section Break",
+   "label": "Cost Summary"
+  },
+  {
+   "default": "0",
    "fieldname": "total_cost",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -89,42 +127,52 @@
    "read_only": 1
   },
   {
+   "default": "USD",
    "fieldname": "currency",
    "fieldtype": "Data",
-   "default": "USD",
    "label": "Currency",
    "read_only": 1
   },
   {
+   "fieldname": "column_break_cost",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
    "fieldname": "items_total",
    "fieldtype": "Int",
    "label": "Total Items",
    "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "items_completed",
    "fieldtype": "Int",
    "label": "Items Completed",
    "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "estimated_minutes",
    "fieldtype": "Int",
    "label": "Estimated Minutes",
    "read_only": 1
   },
   {
-   "fieldname": "section_break_costs",
+   "fieldname": "cost_breakdown_section",
    "fieldtype": "Section Break",
-   "label": "Cost Breakdown"
+   "label": "Cost Breakdown",
+   "collapsible": 1
   },
   {
+   "default": "0",
    "fieldname": "registry_subtotal",
    "fieldtype": "Currency",
    "label": "Registry Subtotal",
    "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "builder_subtotal",
    "fieldtype": "Currency",
    "label": "Builder Subtotal",
@@ -135,15 +183,17 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "0",
    "fieldname": "community_subtotal",
    "fieldtype": "Currency",
    "label": "Community Subtotal",
    "read_only": 1
   },
   {
-   "fieldname": "section_break_dates",
+   "fieldname": "dates_section",
    "fieldtype": "Section Break",
-   "label": "Dates"
+   "label": "Dates",
+   "collapsible": 1
   },
   {
    "fieldname": "created_at",
@@ -174,9 +224,10 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_approval",
+   "fieldname": "approval_section",
    "fieldtype": "Section Break",
-   "label": "Approval Details"
+   "label": "Approval Details",
+   "collapsible": 1
   },
   {
    "fieldname": "approved_by",
@@ -201,7 +252,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_content",
+   "fieldname": "content_section",
    "fieldtype": "Section Break",
    "label": "Content",
    "collapsible": 1
@@ -219,7 +270,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_contract",
+   "fieldname": "contract_section",
    "fieldtype": "Section Break",
    "label": "Contract Details",
    "collapsible": 1
@@ -237,7 +288,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_items",
+   "fieldname": "items_section",
    "fieldtype": "Section Break",
    "label": "Items",
    "collapsible": 1
@@ -250,16 +301,39 @@
    "description": "Contract line items stored as JSON"
   }
  ],
- "index_web_pages_for_search": 0,
- "istable": 1,
+ "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-01 00:00:00.000000",
+ "modified": "2025-01-01 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Senaerp Platform",
- "name": "Waitlist Contract",
+ "name": "Platform Contracts",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
- "permissions": [],
- "sort_field": "modified",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

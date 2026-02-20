@@ -21,9 +21,7 @@
   "status_section",
   "status",
   "column_break_7",
-  "submitted_on",
-  "contracts_section",
-  "contracts"
+  "submitted_on"
  ],
  "fields": [
   {
@@ -101,17 +99,6 @@
    "fieldtype": "Datetime",
    "label": "Submitted On",
    "read_only": 1
-  },
-  {
-   "fieldname": "contracts_section",
-   "fieldtype": "Section Break",
-   "label": "Contracts"
-  },
-  {
-   "fieldname": "contracts",
-   "fieldtype": "Table",
-   "label": "Contracts",
-   "options": "Waitlist Contract"
   }
  ],
  "links": [],
