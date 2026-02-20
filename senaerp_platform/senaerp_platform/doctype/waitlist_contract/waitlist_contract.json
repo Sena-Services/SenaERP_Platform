@@ -8,19 +8,37 @@
   "title",
   "status",
   "builder_mode",
-  "column_break_1",
+  "instance",
+  "column_break_basic",
   "total_cost",
   "currency",
   "items_total",
+  "items_completed",
+  "estimated_minutes",
+  "section_break_costs",
+  "registry_subtotal",
+  "builder_subtotal",
+  "column_break_costs",
+  "community_subtotal",
   "section_break_dates",
   "created_at",
   "approved_at",
-  "column_break_2",
+  "column_break_dates",
   "build_started_at",
   "build_completed_at",
+  "section_break_approval",
+  "approved_by",
+  "rejection_reason",
+  "column_break_approval",
+  "build_error",
   "section_break_content",
-  "notes_summary",
-  "brd_summary"
+  "notes_content",
+  "brd_content",
+  "section_break_contract",
+  "contract_json",
+  "terms",
+  "section_break_items",
+  "items_json"
  ],
  "fields": [
   {
@@ -54,7 +72,13 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_1",
+   "fieldname": "instance",
+   "fieldtype": "Data",
+   "label": "Instance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_basic",
    "fieldtype": "Column Break"
   },
   {
@@ -78,6 +102,45 @@
    "read_only": 1
   },
   {
+   "fieldname": "items_completed",
+   "fieldtype": "Int",
+   "label": "Items Completed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "estimated_minutes",
+   "fieldtype": "Int",
+   "label": "Estimated Minutes",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_costs",
+   "fieldtype": "Section Break",
+   "label": "Cost Breakdown"
+  },
+  {
+   "fieldname": "registry_subtotal",
+   "fieldtype": "Currency",
+   "label": "Registry Subtotal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "builder_subtotal",
+   "fieldtype": "Currency",
+   "label": "Builder Subtotal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_costs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "community_subtotal",
+   "fieldtype": "Currency",
+   "label": "Community Subtotal",
+   "read_only": 1
+  },
+  {
    "fieldname": "section_break_dates",
    "fieldtype": "Section Break",
    "label": "Dates"
@@ -95,7 +158,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_2",
+   "fieldname": "column_break_dates",
    "fieldtype": "Column Break"
   },
   {
@@ -111,21 +174,80 @@
    "read_only": 1
   },
   {
+   "fieldname": "section_break_approval",
+   "fieldtype": "Section Break",
+   "label": "Approval Details"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Data",
+   "label": "Approved By",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_approval",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "build_error",
+   "fieldtype": "Small Text",
+   "label": "Build Error",
+   "read_only": 1
+  },
+  {
    "fieldname": "section_break_content",
    "fieldtype": "Section Break",
-   "label": "Content Summary"
+   "label": "Content",
+   "collapsible": 1
   },
   {
-   "fieldname": "notes_summary",
-   "fieldtype": "Small Text",
-   "label": "Notes Summary",
+   "fieldname": "notes_content",
+   "fieldtype": "Text Editor",
+   "label": "Notes Content",
    "read_only": 1
   },
   {
-   "fieldname": "brd_summary",
-   "fieldtype": "Small Text",
-   "label": "BRD Summary",
+   "fieldname": "brd_content",
+   "fieldtype": "Text Editor",
+   "label": "BRD Content",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_contract",
+   "fieldtype": "Section Break",
+   "label": "Contract Details",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "contract_json",
+   "fieldtype": "JSON",
+   "label": "Contract JSON",
+   "read_only": 1
+  },
+  {
+   "fieldname": "terms",
+   "fieldtype": "Text Editor",
+   "label": "Terms",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_items",
+   "fieldtype": "Section Break",
+   "label": "Items",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "items_json",
+   "fieldtype": "JSON",
+   "label": "Items (JSON)",
+   "read_only": 1,
+   "description": "Contract line items stored as JSON"
   }
  ],
  "index_web_pages_for_search": 0,
