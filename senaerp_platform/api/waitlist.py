@@ -184,3 +184,89 @@ def update_waitlist_status(name, status):
 			"error": str(e),
 			"message": _("Failed to update status")
 		}
+
+
+@frappe.whitelist()
+def sync_contract(user_email, contract_data):
+	"""
+	Sync a contract from sena-agents-backend to the Waitlist.
+	Called by the Builder Contract doctype when a contract is created or updated.
+
+	Args:
+		user_email (str): Email of the user who created the contract
+		contract_data (dict): Contract data to sync
+
+	Returns:
+		dict: Success status and message
+
+	Example:
+		POST /api/method/senaerp_platform.api.waitlist.sync_contract
+		Headers: Authorization: token api_key:api_secret
+		Payload: {
+			"user_email": "user@example.com",
+			"contract_data": {
+				"contract_name": "BC-00001",
+				"title": "My Contract",
+				"status": "Draft",
+				...
+			}
+		}
+	"""
+	try:
+		import json
+
+		# Parse contract_data if it's a string
+		if isinstance(contract_data, str):
+			contract_data = json.loads(contract_data)
+
+		if not user_email:
+			return {
+				"success": False,
+				"error": "user_email is required"
+			}
+
+		# Find Waitlist entry matching this email
+		waitlist_name = frappe.db.get_value("Waitlist", {"email": user_email}, "name")
+		if not waitlist_name:
+			return {
+				"success": False,
+				"error": f"No Waitlist entry found for email: {user_email}"
+			}
+
+		waitlist = frappe.get_doc("Waitlist", waitlist_name)
+
+		# Check if contract already exists in waitlist
+		existing_row = None
+		contract_name = contract_data.get("contract_name")
+		for row in waitlist.contracts or []:
+			if row.contract_name == contract_name:
+				existing_row = row
+				break
+
+		if existing_row:
+			# Update existing row
+			for key, value in contract_data.items():
+				if hasattr(existing_row, key):
+					setattr(existing_row, key, value)
+		else:
+			# Add new row
+			waitlist.append("contracts", contract_data)
+
+		waitlist.flags.ignore_permissions = True
+		waitlist.save()
+		frappe.db.commit()
+
+		return {
+			"success": True,
+			"message": f"Contract {contract_name} synced to Waitlist {waitlist_name}",
+			"waitlist": waitlist_name
+		}
+
+	except Exception as e:
+		frappe.log_error(f"Error syncing contract: {str(e)}", "Contract Sync API Error")
+		frappe.db.rollback()
+		return {
+			"success": False,
+			"error": str(e),
+			"message": _("Failed to sync contract")
+		}
