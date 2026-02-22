@@ -1,0 +1,251 @@
+{
+ "actions": [],
+ "autoname": "RTEMPL-.#####",
+ "creation": "2026-02-22 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "registry",
+  "properties_section",
+  "injectable",
+  "can_be_killed",
+  "can_be_created_standard",
+  "can_be_created_ephemeral",
+  "column_break_props",
+  "visible_in_agent_list",
+  "single_user_instance",
+  "is_worker_agent",
+  "is_onetime_agent",
+  "triggers_section",
+  "trigger_user_message",
+  "trigger_agent_wakeup",
+  "trigger_comms_inbox",
+  "trigger_comms_mention_direct",
+  "column_break_triggers",
+  "trigger_comms_mention_all",
+  "trigger_comms_townhall_any",
+  "trigger_tasks",
+  "overridable_section",
+  "model_overridable",
+  "skills_overridable",
+  "tools_overridable",
+  "triggers_overridable",
+  "column_break_overridable",
+  "properties_overridable",
+  "ui_overridable",
+  "logic_overridable"
+ ],
+ "fields": [
+  {
+   "fieldname": "registry",
+   "fieldtype": "Link",
+   "label": "Registry",
+   "options": "Registry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "properties_section",
+   "fieldtype": "Section Break",
+   "label": "Properties"
+  },
+  {
+   "default": "0",
+   "fieldname": "injectable",
+   "fieldtype": "Check",
+   "label": "Injectable",
+   "description": "Other agents can inject messages into this agent's instance"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_be_killed",
+   "fieldtype": "Check",
+   "label": "Can Be Killed",
+   "description": "Other agents can kill instances of this agent"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_be_created_standard",
+   "fieldtype": "Check",
+   "label": "Can Be Created Standard",
+   "description": "Can create standard (persistent) instances"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_be_created_ephemeral",
+   "fieldtype": "Check",
+   "label": "Can Be Created Ephemeral",
+   "description": "Can create ephemeral (temporary) instances"
+  },
+  {
+   "fieldname": "column_break_props",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "visible_in_agent_list",
+   "fieldtype": "Check",
+   "label": "Visible in Agent List",
+   "description": "Shown in list_agents results"
+  },
+  {
+   "default": "0",
+   "fieldname": "single_user_instance",
+   "fieldtype": "Check",
+   "label": "Single User Instance",
+   "description": "Only one instance per user"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_worker_agent",
+   "fieldtype": "Check",
+   "label": "Is Worker Agent",
+   "description": "Background worker (hidden from carousel)"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_onetime_agent",
+   "fieldtype": "Check",
+   "label": "Is Onetime Agent",
+   "description": "Runs once then stops"
+  },
+  {
+   "fieldname": "triggers_section",
+   "fieldtype": "Section Break",
+   "label": "Triggers"
+  },
+  {
+   "default": "1",
+   "fieldname": "trigger_user_message",
+   "fieldtype": "Check",
+   "label": "Trigger User Message",
+   "description": "Respond to user messages"
+  },
+  {
+   "default": "0",
+   "fieldname": "trigger_agent_wakeup",
+   "fieldtype": "Check",
+   "label": "Trigger Agent Wakeup",
+   "description": "Woken by system"
+  },
+  {
+   "default": "1",
+   "fieldname": "trigger_comms_inbox",
+   "fieldtype": "Check",
+   "label": "Trigger Comms Inbox",
+   "description": "DMs from other agents"
+  },
+  {
+   "default": "1",
+   "fieldname": "trigger_comms_mention_direct",
+   "fieldtype": "Check",
+   "label": "Trigger Comms Mention Direct",
+   "description": "@name mentions"
+  },
+  {
+   "fieldname": "column_break_triggers",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "trigger_comms_mention_all",
+   "fieldtype": "Check",
+   "label": "Trigger Comms Mention All",
+   "description": "@all mentions"
+  },
+  {
+   "default": "0",
+   "fieldname": "trigger_comms_townhall_any",
+   "fieldtype": "Check",
+   "label": "Trigger Comms Townhall Any",
+   "description": "Any townhall message"
+  },
+  {
+   "default": "1",
+   "fieldname": "trigger_tasks",
+   "fieldtype": "Check",
+   "label": "Trigger Tasks",
+   "description": "Task events"
+  },
+  {
+   "fieldname": "overridable_section",
+   "fieldtype": "Section Break",
+   "label": "Overridable"
+  },
+  {
+   "default": "1",
+   "fieldname": "model_overridable",
+   "fieldtype": "Check",
+   "label": "Model Overridable",
+   "description": "Agent can customize model selection"
+  },
+  {
+   "default": "1",
+   "fieldname": "skills_overridable",
+   "fieldtype": "Check",
+   "label": "Skills Overridable",
+   "description": "Agent can customize skills"
+  },
+  {
+   "default": "1",
+   "fieldname": "tools_overridable",
+   "fieldtype": "Check",
+   "label": "Tools Overridable",
+   "description": "Agent can customize tools"
+  },
+  {
+   "default": "1",
+   "fieldname": "triggers_overridable",
+   "fieldtype": "Check",
+   "label": "Triggers Overridable",
+   "description": "Agent can customize triggers"
+  },
+  {
+   "fieldname": "column_break_overridable",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "properties_overridable",
+   "fieldtype": "Check",
+   "label": "Properties Overridable",
+   "description": "Agent can customize properties"
+  },
+  {
+   "default": "1",
+   "fieldname": "ui_overridable",
+   "fieldtype": "Check",
+   "label": "UI Overridable",
+   "description": "Agent can customize UI"
+  },
+  {
+   "default": "1",
+   "fieldname": "logic_overridable",
+   "fieldtype": "Check",
+   "label": "Logic Overridable",
+   "description": "Agent can customize logic"
+  }
+ ],
+ "links": [],
+ "modified": "2026-02-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Registry",
+ "name": "Registry Agent Template",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Guest"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -17,18 +17,18 @@ from senaerp_platform.registry.seed import ALL_FLAG_NAMES
 
 ITEMS = []
 
-# ── Agent Roles (10) ─────────────────────────────────────────────────────────
+# ── Agent Templates (10) ─────────────────────────────────────────────────────────
 ITEMS += [
-	("Agent Role", "Default", "General-purpose role with balanced permissions for any team configuration", "General", ["default", "general", "balanced"]),
-	("Agent Role", "Communicator", "Handles external communications, announcements, and stakeholder updates", "General", ["communication", "announcements", "external"]),
-	("Agent Role", "Orchestrator", "Coordinates and manages other agents within a team", "General", ["coordination", "management", "orchestration"]),
-	("Agent Role", "Worker", "Executes assigned tasks within the boundaries set by the orchestrator", "General", ["execution", "tasks", "worker"]),
-	("Agent Role", "Analyst", "Analyzes data, generates reports, and provides insights from structured datasets", "General", ["analytics", "data", "reports"]),
-	("Agent Role", "Executor", "Performs automated actions and completes assigned tasks autonomously", "General", ["automation", "execution", "tasks"]),
-	("Agent Role", "Reviewer", "Checks work output from other agents for quality and accuracy", "General", ["quality", "review", "validation"]),
-	("Agent Role", "Dispatcher", "Routes incoming requests and tasks to the most appropriate agents", "General", ["routing", "dispatch", "assignment"]),
-	("Agent Role", "Supervisor", "Monitors agent activities, enforces policies, and escalates issues to humans", "General", ["monitoring", "escalation", "oversight"]),
-	("Agent Role", "Specialist", "Deep domain expert that handles complex, niche tasks requiring specific knowledge", "General", ["domain", "expert", "specialist"]),
+	("Agent Template", "Default", "General-purpose role with balanced permissions for any team configuration", "General", ["default", "general", "balanced"]),
+	("Agent Template", "Communicator", "Handles external communications, announcements, and stakeholder updates", "General", ["communication", "announcements", "external"]),
+	("Agent Template", "Orchestrator", "Coordinates and manages other agents within a team", "General", ["coordination", "management", "orchestration"]),
+	("Agent Template", "Worker", "Executes assigned tasks within the boundaries set by the orchestrator", "General", ["execution", "tasks", "worker"]),
+	("Agent Template", "Analyst", "Analyzes data, generates reports, and provides insights from structured datasets", "General", ["analytics", "data", "reports"]),
+	("Agent Template", "Executor", "Performs automated actions and completes assigned tasks autonomously", "General", ["automation", "execution", "tasks"]),
+	("Agent Template", "Reviewer", "Checks work output from other agents for quality and accuracy", "General", ["quality", "review", "validation"]),
+	("Agent Template", "Dispatcher", "Routes incoming requests and tasks to the most appropriate agents", "General", ["routing", "dispatch", "assignment"]),
+	("Agent Template", "Supervisor", "Monitors agent activities, enforces policies, and escalates issues to humans", "General", ["monitoring", "escalation", "oversight"]),
+	("Agent Template", "Specialist", "Deep domain expert that handles complex, niche tasks requiring specific knowledge", "General", ["domain", "expert", "specialist"]),
 ]
 
 # ── Tools (32) ───────────────────────────────────────────────────────────────
@@ -162,15 +162,15 @@ ITEMS += [
 	("Agent", "Report Builder", "Custom report generator that queries data, creates visualizations, and distributes reports", "General", ["reports", "visualization", "analytics"]),
 ]
 
-# ── Team Types (7) ───────────────────────────────────────────────────────────
+# ── Team Templates (7) ───────────────────────────────────────────────────────────
 ITEMS += [
-	("Team Type", "Standard", "Balanced team type with role-appropriate permissions. Not overridable.", "General", ["standard", "balanced", "default"]),
-	("Team Type", "Default", "Permissive team type. All capabilities allowed for all roles. Overridable at agent level.", "General", ["default", "permissive", "open"]),
-	("Team Type", "Hub and Spoke", "Central orchestrator coordinates peripheral worker agents with restricted cross-talk", "General", ["centralized", "coordination"]),
-	("Team Type", "Assembly Line", "Sequential pipeline where each agent handles one stage and passes to the next", "General", ["pipeline", "sequential", "processing"]),
-	("Team Type", "Escalation Ladder", "Tiered team where issues escalate through progressively more capable agents", "Support", ["escalation", "tiered", "progressive"]),
-	("Team Type", "Review Board", "Panel of reviewers that collectively evaluate and approve work products", "General", ["review", "approval", "consensus"]),
-	("Team Type", "Autonomous Squad", "Fully autonomous team where all agents communicate, spawn, and act independently", "General", ["autonomous", "self-organizing"]),
+	("Team Template", "Standard", "Balanced team type with role-appropriate permissions. Not overridable.", "General", ["standard", "balanced", "default"]),
+	("Team Template", "Default", "Permissive team type. All capabilities allowed for all roles. Overridable at agent level.", "General", ["default", "permissive", "open"]),
+	("Team Template", "Hub and Spoke", "Central orchestrator coordinates peripheral worker agents with restricted cross-talk", "General", ["centralized", "coordination"]),
+	("Team Template", "Assembly Line", "Sequential pipeline where each agent handles one stage and passes to the next", "General", ["pipeline", "sequential", "processing"]),
+	("Team Template", "Escalation Ladder", "Tiered team where issues escalate through progressively more capable agents", "Support", ["escalation", "tiered", "progressive"]),
+	("Team Template", "Review Board", "Panel of reviewers that collectively evaluate and approve work products", "General", ["review", "approval", "consensus"]),
+	("Team Template", "Autonomous Squad", "Fully autonomous team where all agents communicate, spawn, and act independently", "General", ["autonomous", "self-organizing"]),
 ]
 
 # ── Teams (12) ───────────────────────────────────────────────────────────────
@@ -734,14 +734,14 @@ def _cleanup_all():
 	# Child tables first
 	for dt in [
 		"Registry Tag", "Registry Agent Tool", "Registry Agent Skill",
-		"Registry Team Member", "Registry Cluster Team", "Registry Team Type Role Config",
+		"Registry Team Member", "Registry Cluster Team", "Registry Team Template Role Config",
 	]:
 		frappe.db.sql(f"DELETE FROM `tab{dt}`")
 
 	# Extension tables
 	for dt in [
 		"Registry Agent", "Registry Team", "Registry Cluster",
-		"Registry Team Type", "Registry Agent Role", "Registry UI",
+		"Registry Team Template", "Registry Agent Template", "Registry UI",
 		"Registry Logic", "Registry Skill", "Registry Tool",
 	]:
 		frappe.db.sql(f"DELETE FROM `tab{dt}`")
@@ -816,10 +816,10 @@ def _wire_logic(ref_map):
 def _wire_roles(ref_map):
 	"""Set capability flags on custom role extensions (seeded roles handled by seed.py)."""
 	for title, flags in _ROLE_FLAGS.items():
-		ext_name = ref_map.get(("Agent Role", title))
+		ext_name = ref_map.get(("Agent Template", title))
 		if not ext_name:
 			continue
-		doc = frappe.get_doc("Registry Agent Role", ext_name)
+		doc = frappe.get_doc("Registry Agent Template", ext_name)
 		for flag in ALL_FLAG_NAMES:
 			setattr(doc, flag, flags.get(flag, "deny"))
 		doc.save(ignore_permissions=True)
@@ -835,7 +835,7 @@ def _wire_agents(ref_map):
 
 		# Direct links
 		if cfg.get("role"):
-			role_ext = ref_map.get(("Agent Role", cfg["role"]))
+			role_ext = ref_map.get(("Agent Template", cfg["role"]))
 			if role_ext:
 				doc.agent_role = role_ext
 		if cfg.get("ui"):
@@ -870,16 +870,16 @@ def _wire_agents(ref_map):
 
 def _wire_team_types(ref_map):
 	for title, cfg in _TEAM_TYPE_EXT.items():
-		ext_name = ref_map.get(("Team Type", title))
+		ext_name = ref_map.get(("Team Template", title))
 		if not ext_name:
 			continue
 
-		doc = frappe.get_doc("Registry Team Type", ext_name)
+		doc = frappe.get_doc("Registry Team Template", ext_name)
 		doc.overridable = cfg.get("overridable", 0)
 
 		doc.role_configs = []
 		for role_cfg in cfg.get("roles", []):
-			role_ext = ref_map.get(("Agent Role", role_cfg["role"]))
+			role_ext = ref_map.get(("Agent Template", role_cfg["role"]))
 			if not role_ext:
 				continue
 			doc.append("role_configs", {
@@ -901,7 +901,7 @@ def _wire_teams(ref_map):
 
 		# Team type link
 		if cfg.get("team_type"):
-			tt_ext = ref_map.get(("Team Type", cfg["team_type"]))
+			tt_ext = ref_map.get(("Team Template", cfg["team_type"]))
 			if tt_ext:
 				doc.team_type = tt_ext
 
@@ -909,7 +909,7 @@ def _wire_teams(ref_map):
 		doc.members = []
 		for agent_title, role_title in cfg.get("members", []):
 			agent_ext = ref_map.get(("Agent", agent_title))
-			role_ext = ref_map.get(("Agent Role", role_title))
+			role_ext = ref_map.get(("Agent Template", role_title))
 			if agent_ext and role_ext:
 				doc.append("members", {"agent": agent_ext, "role": role_ext})
 

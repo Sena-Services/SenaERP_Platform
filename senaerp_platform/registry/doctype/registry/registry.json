@@ -44,7 +44,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Item Type",
-   "options": "Cluster\nTeam\nAgent\nTool\nSkill\nUI\nLogic\nAgent Role\nTeam Type",
+   "options": "Cluster\nTeam\nAgent\nTool\nSkill\nUI\nLogic\nAgent Template\nTeam Template",
    "reqd": 1
   },
   {

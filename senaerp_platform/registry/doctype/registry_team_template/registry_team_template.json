@@ -1,7 +1,7 @@
 {
  "actions": [],
- "autoname": "RTT-.#####",
- "creation": "2026-02-16 00:00:00.000000",
+ "autoname": "RTTEMPL-.#####",
+ "creation": "2026-02-22 00:00:00.000000",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -27,14 +27,14 @@
    "fieldname": "role_configs",
    "fieldtype": "Table",
    "label": "Role Configs",
-   "options": "Registry Team Type Role Config"
+   "options": "Registry Team Template Role Config"
   }
  ],
  "links": [],
- "modified": "2026-02-16 00:00:00.000000",
+ "modified": "2026-02-22 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Registry",
- "name": "Registry Team Type",
+ "name": "Registry Team Template",
  "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [

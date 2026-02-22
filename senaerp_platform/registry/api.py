@@ -35,36 +35,36 @@ EXTENSION_MAP = {
 	"Skill": "Registry Skill",
 	"UI": "Registry UI",
 	"Logic": "Registry Logic",
-	"Agent Role": "Registry Agent Role",
-	"Team Type": "Registry Team Type",
+	"Agent Template": "Registry Agent Template",
+	"Team Template": "Registry Team Template",
 }
 
 EXTENSION_CHILDREN = {
 	"Registry Cluster": ["cluster_teams"],
 	"Registry Team": ["members"],
 	"Registry Agent": ["agent_tools", "agent_skills"],
-	"Registry Team Type": ["role_configs"],
+	"Registry Team Template": ["role_configs"],
 }
 
 # Direct link fields on extension DocTypes that point to other extensions
 _EXT_LINK_FIELDS = {
 	"Registry Agent": {
-		"agent_role": "Registry Agent Role",
+		"agent_role": "Registry Agent Template",
 		"ui": "Registry UI",
 		"logic": "Registry Logic",
 	},
 	"Registry Team": {
-		"team_type": "Registry Team Type",
+		"team_type": "Registry Team Template",
 	},
 }
 
 # Link fields on child table rows that point to extension DocTypes
 _CHILD_LINK_FIELDS = {
 	"Registry Cluster Team": {"team": "Registry Team"},
-	"Registry Team Member": {"role": "Registry Agent Role", "agent": "Registry Agent"},
+	"Registry Team Member": {"role": "Registry Agent Template", "agent": "Registry Agent"},
 	"Registry Agent Tool": {"tool": "Registry Tool"},
 	"Registry Agent Skill": {"skill": "Registry Skill"},
-	"Registry Team Type Role Config": {"role": "Registry Agent Role"},
+	"Registry Team Template Role Config": {"role": "Registry Agent Template"},
 }
 
 # Map child table fieldname -> child DocType
@@ -73,7 +73,7 @@ _CHILD_TABLE_DOCTYPES = {
 	"members": "Registry Team Member",
 	"agent_tools": "Registry Agent Tool",
 	"agent_skills": "Registry Agent Skill",
-	"role_configs": "Registry Team Type Role Config",
+	"role_configs": "Registry Team Template Role Config",
 }
 
 
@@ -330,8 +330,8 @@ def _resolve_to_registry(ext_doctype, ext_name):
 # ---------------------------------------------------------------------------
 
 INSTALL_ORDER = {
-	"Agent Role": 1, "Skill": 2, "Tool": 3, "UI": 4, "Logic": 5,
-	"Team Type": 6, "Agent": 7, "Team": 8, "Cluster": 9,
+	"Agent Template": 1, "Skill": 2, "Tool": 3, "UI": 4, "Logic": 5,
+	"Team Template": 6, "Agent": 7, "Team": 8, "Cluster": 9,
 }
 
 

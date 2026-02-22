@@ -22,7 +22,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Team Type",
-   "options": "Registry Team Type"
+   "options": "Registry Team Template"
   },
   {
    "fieldname": "members",

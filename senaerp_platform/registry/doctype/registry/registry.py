@@ -13,8 +13,8 @@ EXTENSION_MAP = {
 	"Skill": ("Registry Skill", "RS-.#####"),
 	"UI": ("Registry UI", "RUI-.#####"),
 	"Logic": ("Registry Logic", "RL-.#####"),
-	"Agent Role": ("Registry Agent Role", "RROLE-.#####"),
-	"Team Type": ("Registry Team Type", "RTT-.#####"),
+	"Agent Template": ("Registry Agent Template", "RTEMPL-.#####"),
+	"Team Template": ("Registry Team Template", "RTTEMPL-.#####"),
 }
 
 
