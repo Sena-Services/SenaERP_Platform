@@ -263,10 +263,15 @@ def get_item(slug=None):
 		if ext_doctype:
 			extension = _get_extension(ext_doctype, reg["ref_name"])
 
+	parents = _get_parents(reg["item_type"], reg["ref_name"]) if reg.get("ref_name") else []
+
 	del reg["name"]
 	del reg["ref_name"]
 
-	return {"registry": reg, "extension": extension}
+	result = {"registry": reg, "extension": extension}
+	if parents:
+		result["parents"] = parents
+	return result
 
 
 def _get_extension(ext_doctype, ext_name):
@@ -323,6 +328,77 @@ def _resolve_to_registry(ext_doctype, ext_name):
 		"Registry", registry_name,
 		["slug", "title", "item_type"], as_dict=True,
 	)
+
+
+# ---------------------------------------------------------------------------
+# Parent (reverse) lookups
+# ---------------------------------------------------------------------------
+
+# Child-table reverse: child_doctype -> (link_field, parent_extension_doctype)
+_CHILD_PARENT_MAP = {
+	"Registry Tool": [("Registry Agent Tool", "tool", "Registry Agent")],
+	"Registry Skill": [("Registry Agent Skill", "skill", "Registry Agent")],
+	"Registry Agent": [("Registry Team Member", "agent", "Registry Team")],
+	"Registry Team": [("Registry Cluster Team", "team", "Registry Cluster")],
+}
+
+# Direct-field reverse: extension_doctype -> [(field, parent_extension_doctype)]
+_DIRECT_PARENT_MAP = {
+	"Registry UI": [("ui", "Registry Agent")],
+	"Registry Logic": [("logic", "Registry Agent")],
+	"Registry Agent Template": [("agent_role", "Registry Agent")],
+	"Registry Team Template": [("team_type", "Registry Team")],
+}
+
+
+def _get_parents(item_type, ref_name):
+	"""Find direct parents that reference this item."""
+	if not ref_name:
+		return []
+
+	ext_doctype = EXTENSION_MAP.get(item_type)
+	if not ext_doctype:
+		return []
+
+	parents = []
+	seen = set()
+
+	# Reverse child-table lookups
+	for child_dt, link_field, parent_ext_dt in _CHILD_PARENT_MAP.get(ext_doctype, []):
+		rows = frappe.get_all(
+			child_dt,
+			filters={link_field: ref_name},
+			fields=["parent"],
+		)
+		for row in rows:
+			reg_name = frappe.db.get_value(parent_ext_dt, row.parent, "registry")
+			if reg_name and reg_name not in seen:
+				seen.add(reg_name)
+				ref = frappe.db.get_value(
+					"Registry", reg_name,
+					["slug", "title", "item_type"], as_dict=True,
+				)
+				if ref:
+					parents.append(ref)
+
+	# Reverse direct-field lookups
+	for field, parent_ext_dt in _DIRECT_PARENT_MAP.get(ext_doctype, []):
+		rows = frappe.get_all(
+			parent_ext_dt,
+			filters={field: ref_name},
+			fields=["registry"],
+		)
+		for row in rows:
+			if row.registry and row.registry not in seen:
+				seen.add(row.registry)
+				ref = frappe.db.get_value(
+					"Registry", row.registry,
+					["slug", "title", "item_type"], as_dict=True,
+				)
+				if ref:
+					parents.append(ref)
+
+	return parents
 
 
 # ---------------------------------------------------------------------------

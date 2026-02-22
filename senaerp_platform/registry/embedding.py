@@ -81,10 +81,14 @@ def cosine_similarity(a, b):
 	return dot / (norm_a * norm_b)
 
 
+_SIMILARITY_THRESHOLD = 0.30
+
+
 def semantic_search(query, filters=None, limit=20):
 	"""Search registry items by embedding similarity.
 
-	Returns list of items sorted by relevance, or None if embeddings unavailable.
+	Returns list of items sorted by relevance, or None if embeddings
+	are unavailable or no items exceed the similarity threshold.
 	"""
 	query_embedding = get_embedding(query)
 	if query_embedding is None:
@@ -109,9 +113,14 @@ def semantic_search(query, filters=None, limit=20):
 			emb = json.loads(item["_embedding"])
 		except (json.JSONDecodeError, TypeError):
 			continue
-		item["_score"] = cosine_similarity(query_embedding, emb)
-		del item["_embedding"]
-		scored.append(item)
+		score = cosine_similarity(query_embedding, emb)
+		if score >= _SIMILARITY_THRESHOLD:
+			item["_score"] = score
+			del item["_embedding"]
+			scored.append(item)
+
+	if not scored:
+		return None  # Fall through to fulltext
 
 	scored.sort(key=lambda x: x["_score"], reverse=True)
 	result = scored[:limit]
