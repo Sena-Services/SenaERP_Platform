@@ -11,14 +11,14 @@ from frappe import _
 
 
 @frappe.whitelist(allow_guest=True)
-def submit_waitlist(full_name, email, company_name=None, phone=None, message=None, access_type=None):
+def submit_waitlist(full_name, email, company_name, phone=None, message=None, access_type=None):
 	"""
 	Submit early access waitlist form
 
 	Args:
 		full_name (str): Full name of the person (required)
 		email (str): Email address (required)
-		company_name (str): Company name (optional)
+		company_name (str): Desired site name / subdomain (required)
 		phone (str): Phone number (optional)
 		message (str): Message from the user (optional)
 		access_type (str): Type of access requested - 'product' or 'pitchdeck' (optional)
@@ -31,7 +31,7 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 		Payload: {
 			"full_name": "John Doe",
 			"email": "john@example.com",
-			"company_name": "Acme Inc.",
+			"company_name": "acme",
 			"phone": "+1 (555) 000-0000",
 			"message": "Tell us about yourself",
 			"access_type": "product"
@@ -39,11 +39,11 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 	"""
 	try:
 		# Validate required fields
-		if not full_name or not email:
+		if not full_name or not email or not company_name:
 			return {
 				"success": False,
-				"error": "Full name and email are required",
-				"message": _("Please provide both name and email")
+				"error": "Full name, email, and site name are required",
+				"message": _("Please provide name, email, and site name")
 			}
 
 		# Check if email already exists in waitlist for this access type
@@ -60,7 +60,7 @@ def submit_waitlist(full_name, email, company_name=None, phone=None, message=Non
 			"doctype": "Waitlist",
 			"full_name": full_name,
 			"email": email,
-			"company_name": company_name or "",
+			"company_name": company_name,
 			"phone": phone or "",
 			"message": message or "",
 			"access_type": access_type or "Product",

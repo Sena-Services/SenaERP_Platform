@@ -51,7 +51,8 @@
   {
    "fieldname": "company_name",
    "fieldtype": "Data",
-   "label": "Company Name"
+   "label": "Site Name",
+   "reqd": 1
   },
   {
    "fieldname": "phone",
