@@ -21,7 +21,6 @@
   "column_break_cost",
   "items_total",
   "items_completed",
-  "estimated_minutes",
   "cost_breakdown_section",
   "registry_subtotal",
   "builder_subtotal",
@@ -149,13 +148,6 @@
    "fieldname": "items_completed",
    "fieldtype": "Int",
    "label": "Items Completed",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "estimated_minutes",
-   "fieldtype": "Int",
-   "label": "Estimated Minutes",
    "read_only": 1
   },
   {

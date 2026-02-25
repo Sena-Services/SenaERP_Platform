@@ -75,7 +75,6 @@ class PlatformContracts(Document):
             "currency": "currency",
             "items_total": "items_total",
             "items_completed": "items_completed",
-            "estimated_minutes": "estimated_minutes",
             "registry_subtotal": "registry_subtotal",
             "builder_subtotal": "builder_subtotal",
             "community_subtotal": "community_subtotal",
